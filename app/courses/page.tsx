@@ -77,7 +77,7 @@ export default function CoursesPage() {
       <Navbar />
 
       {/* Header */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border/70 bg-background/70">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -94,8 +94,8 @@ export default function CoursesPage() {
                 className={cn(
                   'hidden shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition-colors sm:flex',
                   showEnrolled
-                    ? 'border-primary bg-primary/10 text-primary'
-                    : 'border-border text-muted-foreground hover:bg-muted'
+                    ? 'border-primary/50 bg-secondary text-primary'
+                    : 'border-border/80 text-muted-foreground hover:bg-secondary/70'
                 )}
               >
                 <BookOpen className="size-4" />
@@ -132,8 +132,8 @@ export default function CoursesPage() {
                     key={value}
                     value={value}
                     className={cn(
-                      'shrink-0 rounded-lg border px-3 py-1.5 text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary',
-                      'data-[state=inactive]:border-border data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:border-primary/40'
+                      'shrink-0 rounded-md border px-3 py-1.5 text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary',
+                      'data-[state=inactive]:border-border/80 data-[state=inactive]:bg-card/60 data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:border-primary/40'
                     )}
                   >
                     {label}
@@ -153,10 +153,10 @@ export default function CoursesPage() {
                 className={cn(
                   'rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors',
                   difficulty === d
-                    ? 'border-primary bg-primary/10 text-primary'
+                    ? 'border-primary/50 bg-secondary text-primary'
                     : d !== ALL
                     ? difficultyColors[d]
-                    : 'border-border text-muted-foreground hover:border-primary/40'
+                    : 'border-border/80 text-muted-foreground hover:border-primary/40'
                 )}
               >
                 {d === ALL ? 'Все уровни' : d}
@@ -171,8 +171,8 @@ export default function CoursesPage() {
                 className={cn(
                   'rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors',
                   grade === g
-                    ? 'border-primary bg-primary/10 text-primary'
-                    : 'border-border text-muted-foreground hover:border-primary/40'
+                    ? 'border-primary/50 bg-secondary text-primary'
+                    : 'border-border/80 text-muted-foreground hover:border-primary/40'
                 )}
               >
                 {g === ALL ? 'Все классы' : `${g} кл.`}
@@ -197,7 +197,7 @@ export default function CoursesPage() {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card py-20 text-center">
+          <div className="surface-card flex flex-col items-center justify-center rounded-lg border-dashed py-20 text-center">
             <BookOpen className="mb-3 size-10 text-muted-foreground/40" />
             <p className="font-medium text-foreground">Курсы не найдены</p>
             <p className="mt-1 text-sm text-muted-foreground">

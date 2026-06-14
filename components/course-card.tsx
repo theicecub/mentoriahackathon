@@ -29,11 +29,14 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
   }
 
   return (
-    <Card className="group flex flex-col overflow-hidden border border-border bg-card shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+    <Card className="group flex flex-col overflow-hidden transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_24px_60px_-42px_oklch(0.17_0.02_215_/_0.55)]">
       {/* Thumbnail */}
-      <div className="relative h-36 overflow-hidden bg-gradient-to-br from-primary/15 to-primary/5">
+      <div className="relative h-36 overflow-hidden border-b border-border/70 bg-[linear-gradient(135deg,oklch(0.94_0.025_188),oklch(0.98_0.01_135)_55%,oklch(0.93_0.035_74))]">
+        <div className="absolute inset-0 opacity-45 [background-image:linear-gradient(to_right,oklch(0.55_0.04_190_/_0.14)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.55_0.04_190_/_0.14)_1px,transparent_1px)] [background-size:28px_28px]" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <GraduationCap className="size-16 text-primary/20" />
+          <div className="flex size-16 items-center justify-center rounded-lg border border-primary/15 bg-card/65 shadow-sm backdrop-blur-sm">
+            <GraduationCap className="size-8 text-primary/70" />
+          </div>
         </div>
         <div className="absolute bottom-2 right-2">
           <Badge
@@ -54,7 +57,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
         )}
         {course.featured && !enrolled && (
           <div className="absolute left-2 top-2">
-            <Badge className="bg-amber/20 text-amber-foreground text-xs border-0">
+            <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs">
               Популярный
             </Badge>
           </div>
@@ -72,7 +75,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
             {course.category}
           </Badge>
         </div>
-        <h3 className="text-balance text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">
+        <h3 className="text-balance text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
           {course.title}
         </h3>
         <p className="text-xs text-muted-foreground">— {course.instructor}</p>
@@ -83,16 +86,16 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
           {course.description}
         </p>
 
-        <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
+        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1 rounded-md bg-muted/45 px-2 py-1">
             <BookOpen className="size-3.5" />
             {course.lessons.length} уроков
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 rounded-md bg-muted/45 px-2 py-1">
             <Clock className="size-3.5" />
             {course.duration}
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 rounded-md bg-muted/45 px-2 py-1">
             <Users className="size-3.5" />
             {course.grades.join(', ')} кл.
           </span>
@@ -109,10 +112,10 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
         )}
       </CardContent>
 
-      <CardFooter className="gap-2 pt-0">
+      <CardFooter className="gap-2 border-t-0 bg-transparent pt-0">
         {enrolled ? (
           <Button
-            className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
+            className="flex-1 text-sm"
             size="sm"
             asChild
           >
@@ -133,7 +136,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
             </Button>
             <Button
               size="sm"
-              className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
+              className="flex-1 text-sm"
               onClick={handleEnroll}
               asChild={!isLoggedIn}
             >

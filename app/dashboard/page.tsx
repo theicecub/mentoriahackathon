@@ -180,9 +180,9 @@ export default function DashboardPage() {
               color: 'bg-rose-50 text-rose-600',
             },
           ].map(({ label, value, icon: Icon, color }) => (
-            <Card key={label} className="border border-border shadow-sm">
+            <Card key={label}>
               <CardContent className="flex items-center gap-3 p-4">
-                <div className={cn('flex size-10 items-center justify-center rounded-xl', color)}>
+                <div className={cn('flex size-10 items-center justify-center rounded-md', color)}>
                   <Icon className="size-5" />
                 </div>
                 <div>
@@ -212,7 +212,7 @@ export default function DashboardPage() {
               </div>
 
               {enrolled.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card py-10 text-center">
+                <div className="surface-card flex flex-col items-center justify-center rounded-lg border-dashed py-10 text-center">
                   <BookOpen className="mb-3 size-8 text-muted-foreground/40" />
                   <p className="text-sm font-medium text-foreground">Ты ещё не записан на курсы</p>
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -227,9 +227,9 @@ export default function DashboardPage() {
               ) : (
                 <div className="flex flex-col gap-3">
                   {enrolled.map(({ course, pct }) => (
-                    <Card key={course.id} className="border border-border shadow-sm">
+                    <Card key={course.id}>
                       <CardContent className="flex items-center gap-4 p-4">
-                        <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                        <div className="flex size-12 shrink-0 items-center justify-center rounded-md border border-primary/15 bg-secondary">
                           <GraduationCap className="size-6 text-primary" />
                         </div>
                         <div className="min-w-0 flex-1">
@@ -299,7 +299,7 @@ export default function DashboardPage() {
               </div>
 
               {savedOps.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card py-10 text-center">
+                <div className="surface-card flex flex-col items-center justify-center rounded-lg border-dashed py-10 text-center">
                   <Bookmark className="mb-3 size-8 text-muted-foreground/40" />
                   <p className="text-sm font-medium text-foreground">Нет сохранённых возможностей</p>
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -317,7 +317,7 @@ export default function DashboardPage() {
                     <OpportunityCard key={op.id} opportunity={op} compact />
                   ))}
                   {savedOps.length > 4 && (
-                    <div className="flex items-center justify-center rounded-xl border border-dashed border-border p-4 sm:col-span-2">
+                    <div className="surface-card flex items-center justify-center rounded-lg border-dashed p-4 sm:col-span-2">
                       <Link href="/opportunities?saved=true">
                         <Button variant="ghost" size="sm" className="gap-1.5">
                           Ещё {savedOps.length - 4} сохранённых
@@ -356,7 +356,7 @@ export default function DashboardPage() {
           {/* ── Right sidebar ─────────────────────────────────────── */}
           <div className="flex flex-col gap-6">
             {/* Goals */}
-            <Card className="border border-border shadow-sm">
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Target className="size-4 text-primary" />
@@ -380,7 +380,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Upcoming deadlines */}
-            <Card className="border border-border shadow-sm">
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Calendar className="size-4 text-primary" />
@@ -433,7 +433,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Recommended opportunities */}
-            <Card className="border border-border shadow-sm">
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Award className="size-4 text-primary" />
@@ -482,7 +482,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Profile info */}
-            <Card className="border border-border shadow-sm">
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Мой профиль</CardTitle>
               </CardHeader>

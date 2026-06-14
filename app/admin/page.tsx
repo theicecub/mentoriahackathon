@@ -242,10 +242,10 @@ export default function AdminPage() {
       <Navbar />
 
       {/* Admin header */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border/70 bg-background/70">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10">
+            <div className="flex size-10 items-center justify-center rounded-md border border-primary/15 bg-secondary">
               <Shield className="size-5 text-primary" />
             </div>
             <div>
@@ -285,9 +285,9 @@ export default function AdminPage() {
             {/* Stats */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {stats.map(({ label, value, icon: Icon, color }) => (
-                <Card key={label} className="border border-border shadow-sm">
+                <Card key={label}>
                   <CardContent className="flex items-center gap-3 p-4">
-                    <div className={cn('flex size-10 items-center justify-center rounded-xl', color)}>
+                    <div className={cn('flex size-10 items-center justify-center rounded-md', color)}>
                       <Icon className="size-5" />
                     </div>
                     <div>
@@ -302,7 +302,7 @@ export default function AdminPage() {
             {/* Activity breakdown */}
             <div className="grid gap-6 lg:grid-cols-2">
               {/* Course breakdown */}
-              <Card className="border border-border shadow-sm">
+              <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <BarChart3 className="size-4 text-primary" />
@@ -330,7 +330,7 @@ export default function AdminPage() {
               </Card>
 
               {/* Opportunities breakdown */}
-              <Card className="border border-border shadow-sm">
+              <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <BarChart3 className="size-4 text-primary" />
@@ -360,9 +360,9 @@ export default function AdminPage() {
 
             {/* Quick actions */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <Card className="border-2 border-dashed border-border bg-card shadow-none transition-all hover:border-primary/40 hover:shadow-sm cursor-pointer" onClick={openAddOp}>
+              <Card className="cursor-pointer border-dashed bg-card/80 shadow-none transition-all hover:-translate-y-0.5 hover:border-primary/40" onClick={openAddOp}>
                 <CardContent className="flex items-center gap-4 p-5">
-                  <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
+                  <div className="flex size-12 items-center justify-center rounded-md border border-primary/15 bg-secondary">
                     <PlusCircle className="size-6 text-primary" />
                   </div>
                   <div>
@@ -373,9 +373,9 @@ export default function AdminPage() {
                   </div>
                 </CardContent>
               </Card>
-              <Card className="border-2 border-dashed border-border bg-card shadow-none transition-all hover:border-primary/40 hover:shadow-sm cursor-pointer" onClick={openAddCourse}>
+              <Card className="cursor-pointer border-dashed bg-card/80 shadow-none transition-all hover:-translate-y-0.5 hover:border-primary/40" onClick={openAddCourse}>
                 <CardContent className="flex items-center gap-4 p-5">
-                  <div className="flex size-12 items-center justify-center rounded-xl bg-amber-100">
+                  <div className="flex size-12 items-center justify-center rounded-md bg-amber-100">
                     <BookOpen className="size-6 text-amber-600" />
                   </div>
                   <div>
@@ -412,11 +412,11 @@ export default function AdminPage() {
               </Button>
             </div>
 
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
+            <div className="surface-card overflow-hidden rounded-lg">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-muted/40">
+                    <tr className="border-b border-border/70 bg-muted/35">
                       <th className="px-4 py-3 text-left font-medium text-muted-foreground">Название</th>
                       <th className="hidden px-4 py-3 text-left font-medium text-muted-foreground sm:table-cell">Категория</th>
                       <th className="hidden px-4 py-3 text-left font-medium text-muted-foreground md:table-cell">Формат</th>
@@ -530,11 +530,11 @@ export default function AdminPage() {
               </Button>
             </div>
 
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
+            <div className="surface-card overflow-hidden rounded-lg">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-muted/40">
+                    <tr className="border-b border-border/70 bg-muted/35">
                       <th className="px-4 py-3 text-left font-medium text-muted-foreground">Курс</th>
                       <th className="hidden px-4 py-3 text-left font-medium text-muted-foreground sm:table-cell">Категория</th>
                       <th className="hidden px-4 py-3 text-left font-medium text-muted-foreground md:table-cell">Уровень</th>

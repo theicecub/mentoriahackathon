@@ -30,14 +30,11 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
   }
 
   return (
-    <Card className="group flex flex-col overflow-hidden border border-border bg-card shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-      {/* Header stripe */}
-      <div className="h-1 w-full bg-primary/20" />
-
+    <Card className="group flex flex-col overflow-hidden transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_24px_60px_-42px_oklch(0.17_0.02_215_/_0.55)]">
       <CardHeader className="gap-3 pb-2">
         <div className="flex items-start justify-between gap-2">
           {/* Logo placeholder */}
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-lg font-bold text-primary">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-md border border-primary/15 bg-secondary text-lg font-bold text-primary">
             {opportunity.logo}
           </div>
 
@@ -47,10 +44,10 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
               onClick={handleSave}
               aria-label={saved ? 'Убрать из избранного' : 'Сохранить'}
               className={cn(
-                'rounded-lg p-1.5 transition-colors',
+                'rounded-md p-1.5 transition-colors',
                 saved
-                  ? 'text-primary hover:text-primary/70'
-                  : 'text-muted-foreground hover:text-primary'
+                  ? 'bg-secondary text-primary hover:text-primary/70'
+                  : 'text-muted-foreground hover:bg-secondary hover:text-primary'
               )}
             >
               {saved ? <BookmarkCheck className="size-5" /> : <Bookmark className="size-5" />}
@@ -69,12 +66,12 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
               {opportunity.category}
             </Badge>
             {opportunity.featured && (
-              <Badge className="bg-amber/20 text-amber-foreground text-xs border-0">
+              <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs">
                 Рекомендуем
               </Badge>
             )}
           </div>
-          <h3 className="text-balance text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">
+          <h3 className="text-balance text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
             {opportunity.title}
           </h3>
           <p className="mt-0.5 text-sm text-muted-foreground">{opportunity.organization}</p>
@@ -88,7 +85,7 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
           </p>
         )}
 
-        <div className="flex flex-col gap-1.5">
+        <div className="grid gap-1.5 rounded-md border border-border/70 bg-muted/30 p-3">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             {opportunity.format === 'Онлайн' ? (
               <Globe className="size-3.5 shrink-0" />
@@ -126,7 +123,7 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
             {opportunity.requirements.slice(0, 2).map((req) => (
               <span
                 key={req}
-                className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                className="rounded-md border border-border/60 bg-background/70 px-2 py-0.5 text-xs text-muted-foreground"
               >
                 {req}
               </span>
@@ -135,9 +132,9 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
         )}
       </CardContent>
 
-      <CardFooter className="gap-2 pt-0">
+      <CardFooter className="gap-2 border-t-0 bg-transparent pt-0">
         <Button
-          className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
+          className="flex-1 text-sm"
           size="sm"
           asChild
         >

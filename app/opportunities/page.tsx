@@ -94,8 +94,8 @@ export default function OpportunitiesPage() {
               className={cn(
                 'rounded-lg px-3 py-2 text-left text-sm transition-colors',
                 category === c
-                  ? 'bg-primary/10 text-primary font-medium'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-secondary text-primary font-medium'
+                  : 'text-muted-foreground hover:bg-secondary/70 hover:text-foreground'
               )}
             >
               {c === ALL ? 'Все категории' : c}
@@ -118,8 +118,8 @@ export default function OpportunitiesPage() {
               className={cn(
                 'rounded-lg px-3 py-2 text-left text-sm transition-colors',
                 format === f
-                  ? 'bg-primary/10 text-primary font-medium'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-secondary text-primary font-medium'
+                  : 'text-muted-foreground hover:bg-secondary/70 hover:text-foreground'
               )}
             >
               {f === ALL ? 'Любой формат' : f}
@@ -142,8 +142,8 @@ export default function OpportunitiesPage() {
               className={cn(
                 'rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors',
                 grade === g
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : 'border-border text-muted-foreground hover:border-primary/40 hover:text-foreground'
+                  ? 'border-primary/50 bg-secondary text-primary'
+                  : 'border-border/80 text-muted-foreground hover:border-primary/40 hover:text-foreground'
               )}
             >
               {g === ALL ? 'Все' : `${g} кл.`}
@@ -169,7 +169,7 @@ export default function OpportunitiesPage() {
       <Navbar />
 
       {/* Hero banner */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border/70 bg-background/70">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
           <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
             Каталог возможностей
@@ -250,7 +250,7 @@ export default function OpportunitiesPage() {
 
       {/* Mobile filters drawer */}
       {mobileFilterOpen && (
-        <div className="border-b border-border bg-card px-4 py-5 lg:hidden">
+        <div className="border-b border-border/70 bg-background/90 px-4 py-5 lg:hidden">
           <FiltersPanel />
         </div>
       )}
@@ -258,7 +258,7 @@ export default function OpportunitiesPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-1 gap-8 px-4 py-8 sm:px-6">
         {/* Desktop Sidebar */}
         <aside className="hidden w-52 shrink-0 lg:block">
-          <div className="sticky top-20 rounded-xl border border-border bg-card p-5 shadow-sm">
+          <div className="surface-card sticky top-20 rounded-lg p-5">
             <div className="mb-4 flex items-center gap-2">
               <Filter className="size-4 text-muted-foreground" />
               <span className="text-sm font-semibold text-foreground">Фильтры</span>
@@ -270,8 +270,8 @@ export default function OpportunitiesPage() {
               className={cn(
                 'mb-4 flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors',
                 showSaved
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : 'border-border text-muted-foreground hover:bg-muted'
+                  ? 'border-primary/50 bg-secondary text-primary'
+                  : 'border-border/80 text-muted-foreground hover:bg-secondary/70'
               )}
             >
               <Bookmark className="size-4" />
@@ -290,8 +290,8 @@ export default function OpportunitiesPage() {
             className={cn(
               'mb-4 flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors lg:hidden',
               showSaved
-                ? 'border-primary bg-primary/10 text-primary'
-                : 'border-border text-muted-foreground hover:bg-muted'
+                ? 'border-primary/50 bg-secondary text-primary'
+                : 'border-border/80 text-muted-foreground hover:bg-secondary/70'
             )}
           >
             <Bookmark className="size-4" />
@@ -305,7 +305,7 @@ export default function OpportunitiesPage() {
           </div>
 
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card py-20 text-center">
+            <div className="surface-card flex flex-col items-center justify-center rounded-lg border-dashed py-20 text-center">
               <Search className="mb-3 size-10 text-muted-foreground/40" />
               <p className="font-medium text-foreground">Ничего не найдено</p>
               <p className="mt-1 text-sm text-muted-foreground">

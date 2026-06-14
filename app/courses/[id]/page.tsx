@@ -69,7 +69,7 @@ function QuizSection({
   return (
     <div className="space-y-6">
       {lesson.quiz.map((q, qi) => (
-        <div key={qi} className="rounded-xl border border-border bg-card p-5">
+        <div key={qi} className="surface-card rounded-lg p-5">
           <p className="mb-4 font-medium text-foreground">
             {qi + 1}. {q.question}
           </p>
@@ -97,7 +97,7 @@ function QuizSection({
                         ? 'border-red-400 bg-red-50 text-red-800'
                         : 'border-border bg-muted text-muted-foreground'
                       : isSelected
-                      ? 'border-primary bg-primary/10 text-primary'
+                      ? 'border-primary/60 bg-secondary text-primary'
                       : 'border-border bg-background text-foreground hover:border-primary/40 hover:bg-muted'
                   )}
                 >
@@ -131,7 +131,7 @@ function QuizSection({
       ) : (
         <div
           className={cn(
-            'rounded-xl border p-4 text-center',
+            'rounded-lg border p-4 text-center',
             score === lesson.quiz.length
               ? 'border-green-300 bg-green-50'
               : 'border-amber-300 bg-amber-50'
@@ -230,7 +230,7 @@ export default function CourseDetailPage() {
       <Navbar />
 
       {/* Course hero */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border/70 bg-background/70">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
           <Link
             href="/courses"
@@ -302,7 +302,7 @@ export default function CourseDetailPage() {
 
             {/* Right: enrollment card */}
             <div className="w-full lg:w-72 shrink-0">
-              <Card className="border border-border shadow-sm">
+              <Card>
                 {/* Thumbnail */}
                 <div className="relative h-36 overflow-hidden rounded-t-xl bg-gradient-to-br from-primary/15 to-primary/5">
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -430,7 +430,7 @@ export default function CourseDetailPage() {
             </Card>
 
             {!enrolled && (
-              <div className="mt-4 rounded-xl border border-dashed border-border bg-card p-4 text-center">
+              <div className="surface-card mt-4 rounded-lg border-dashed p-4 text-center">
                 <Lock className="mx-auto mb-2 size-6 text-muted-foreground/50" />
                 <p className="text-sm font-medium text-foreground">Запись открыта</p>
                 <p className="mt-1 text-xs text-muted-foreground">
@@ -473,7 +473,7 @@ export default function CourseDetailPage() {
                 {/* Video */}
                 {activeLesson.type === 'video' && activeLesson.videoUrl && (
                   <div className="space-y-5">
-                    <div className="relative overflow-hidden rounded-xl bg-black aspect-video shadow-lg">
+                    <div className="relative aspect-video overflow-hidden rounded-lg bg-black shadow-[0_18px_48px_-32px_oklch(0.17_0.02_215_/_0.6)]">
                       <iframe
                         src={activeLesson.videoUrl}
                         title={activeLesson.title}
@@ -504,13 +504,13 @@ export default function CourseDetailPage() {
                 {/* Quiz */}
                 {activeLesson.type === 'quiz' && (
                   <div className="space-y-4">
-                    <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
+                    <div className="rounded-lg border border-primary/20 bg-secondary/70 p-4">
                       <p className="text-sm font-medium text-primary">
                         Ответьте на все вопросы, чтобы засчитать тест.
                       </p>
                     </div>
                     {isCompleted(activeLesson.id) ? (
-                      <div className="flex items-center gap-2 rounded-xl border border-green-300 bg-green-50 p-4 text-green-700">
+                      <div className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 p-4 text-green-700">
                         <CheckCircle className="size-5" />
                         <span className="font-medium">Тест пройден!</span>
                       </div>
@@ -526,7 +526,7 @@ export default function CourseDetailPage() {
                 {/* Assignment */}
                 {activeLesson.type === 'assignment' && (
                   <div className="space-y-4">
-                    <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
                       <div className="mb-3 flex items-center gap-2">
                         <PenLine className="size-5 text-amber-600" />
                         <span className="font-semibold text-amber-800">Практическое задание</span>
@@ -593,8 +593,8 @@ export default function CourseDetailPage() {
               </div>
             ) : (
               // Welcome screen
-              <div className="flex h-full flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card py-20 text-center">
-                <div className="mb-4 flex size-16 items-center justify-center rounded-2xl bg-primary/10">
+              <div className="surface-card flex h-full flex-col items-center justify-center rounded-lg border-dashed py-20 text-center">
+                <div className="mb-4 flex size-16 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <BookOpen className="size-8 text-primary" />
                 </div>
                 <h2 className="text-lg font-bold text-foreground">

@@ -151,10 +151,10 @@ export default function OnboardingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {/* Top bar */}
-      <header className="border-b border-border bg-card px-4 py-3 sm:px-6">
+      <header className="border-b border-border/70 bg-background/82 px-4 py-3 backdrop-blur-xl sm:px-6">
         <div className="mx-auto flex max-w-xl items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex size-7 items-center justify-center rounded-lg bg-primary">
+            <div className="flex size-7 items-center justify-center rounded-md bg-foreground">
               <GraduationCap className="size-4 text-primary-foreground" />
             </div>
             <span className="font-bold text-foreground">
@@ -178,7 +178,7 @@ export default function OnboardingPage() {
           {step === 1 && (
             <div className="space-y-6">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-primary/10">
+                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <User className="size-7 text-primary" />
                 </div>
                 <h1 className="text-2xl font-bold text-foreground">Привет! Давай знакомиться</h1>
@@ -187,7 +187,7 @@ export default function OnboardingPage() {
                 </p>
               </div>
 
-              <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4">
+              <div className="surface-card space-y-4 rounded-lg p-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">Твоё имя и фамилия</Label>
                   <Input
@@ -217,7 +217,7 @@ export default function OnboardingPage() {
           {step === 2 && (
             <div className="space-y-6">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-primary/10">
+                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <GraduationCap className="size-7 text-primary" />
                 </div>
                 <h1 className="text-2xl font-bold text-foreground">В каком ты классе?</h1>
@@ -232,10 +232,10 @@ export default function OnboardingPage() {
                     key={value}
                     onClick={() => setGrade(value)}
                     className={cn(
-                      'rounded-xl border-2 p-4 text-center text-sm font-medium transition-all',
+                      'rounded-lg border p-4 text-center text-sm font-medium transition-all',
                       grade === value
-                        ? 'border-primary bg-primary/10 text-primary'
-                        : 'border-border bg-card text-foreground hover:border-primary/40 hover:bg-muted'
+                        ? 'border-primary/60 bg-secondary text-primary'
+                        : 'border-border/80 bg-card/80 text-foreground hover:border-primary/40 hover:bg-secondary/70'
                     )}
                   >
                     {grade === value && (
@@ -252,7 +252,7 @@ export default function OnboardingPage() {
           {step === 3 && (
             <div className="space-y-6">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-primary/10">
+                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <Heart className="size-7 text-primary" />
                 </div>
                 <h1 className="text-2xl font-bold text-foreground">Что тебя интересует?</h1>
@@ -267,10 +267,10 @@ export default function OnboardingPage() {
                     key={value}
                     onClick={() => toggleInterest(value)}
                     className={cn(
-                      'relative rounded-xl border-2 p-3.5 text-left transition-all',
+                      'relative rounded-lg border p-3.5 text-left transition-all',
                       interests.includes(value)
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border bg-card hover:border-primary/30 hover:bg-muted'
+                        ? 'border-primary/60 bg-secondary'
+                        : 'border-border/80 bg-card/80 hover:border-primary/30 hover:bg-secondary/70'
                     )}
                   >
                     {interests.includes(value) && (
@@ -296,7 +296,7 @@ export default function OnboardingPage() {
           {step === 4 && (
             <div className="space-y-6">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-primary/10">
+                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <Target className="size-7 text-primary" />
                 </div>
                 <h1 className="text-2xl font-bold text-foreground">Каковы твои цели?</h1>
@@ -311,14 +311,14 @@ export default function OnboardingPage() {
                     key={value}
                     onClick={() => toggleGoal(value)}
                     className={cn(
-                      'flex items-center gap-4 rounded-xl border-2 p-4 text-left transition-all',
+                      'flex items-center gap-4 rounded-lg border p-4 text-left transition-all',
                       goals.includes(value)
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border bg-card hover:border-primary/30 hover:bg-muted'
+                        ? 'border-primary/60 bg-secondary'
+                        : 'border-border/80 bg-card/80 hover:border-primary/30 hover:bg-secondary/70'
                     )}
                   >
                     <div className={cn(
-                      'flex size-10 shrink-0 items-center justify-center rounded-xl',
+                      'flex size-10 shrink-0 items-center justify-center rounded-md',
                       goals.includes(value) ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                     )}>
                       <Icon className="size-5" />

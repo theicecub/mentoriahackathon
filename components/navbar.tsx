@@ -52,11 +52,11 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-card/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
+          <div className="flex size-8 items-center justify-center rounded-md bg-foreground shadow-sm">
             <GraduationCap className="size-5 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold tracking-tight text-foreground">
@@ -71,10 +71,10 @@ export function Navbar() {
               key={href}
               href={href}
               className={cn(
-                'flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                'flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                 pathname?.startsWith(href)
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-secondary text-primary'
+                  : 'text-muted-foreground hover:bg-secondary/70 hover:text-foreground'
               )}
             >
               <Icon className="size-4" />
@@ -99,7 +99,7 @@ export function Navbar() {
               </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-muted transition-colors">
+                  <button className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-secondary/70">
                     <Avatar className="size-7">
                       <AvatarFallback className="text-xs bg-primary text-primary-foreground">
                         {initials}
@@ -150,7 +150,7 @@ export function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="flex size-9 items-center justify-center rounded-lg hover:bg-muted transition-colors md:hidden"
+          className="flex size-9 items-center justify-center rounded-md transition-colors hover:bg-secondary/70 md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Меню"
         >
@@ -160,7 +160,7 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="border-t border-border bg-card px-4 py-4 md:hidden">
+        <div className="border-t border-border/70 bg-background/95 px-4 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
             {navLinks.map(({ href, label, icon: Icon }) => (
               <Link
@@ -168,10 +168,10 @@ export function Navbar() {
                 href={href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                  'flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors',
                   pathname?.startsWith(href)
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:bg-muted'
+                    ? 'bg-secondary text-primary'
+                    : 'text-muted-foreground hover:bg-secondary/70'
                 )}
               >
                 <Icon className="size-4" />
@@ -183,7 +183,7 @@ export function Navbar() {
                 <Link
                   href="/dashboard"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted"
+                  className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary/70"
                 >
                   <LayoutDashboard className="size-4" />
                   Кабинет
@@ -191,14 +191,14 @@ export function Navbar() {
                 <Link
                   href="/admin"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted"
+                  className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary/70"
                 >
                   <Settings className="size-4" />
                   Админ-панель
                 </Link>
                 <button
                   onClick={() => { handleLogout(); setMobileOpen(false) }}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-destructive hover:bg-muted text-left"
+                  className="flex items-center gap-2 rounded-md px-3 py-2.5 text-left text-sm font-medium text-destructive hover:bg-secondary/70"
                 >
                   <LogOut className="size-4" />
                   Выйти

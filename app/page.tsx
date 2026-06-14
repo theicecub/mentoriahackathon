@@ -133,15 +133,10 @@ export default function HomePage() {
 
       <main>
         {/* ── Hero ─────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-card">
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 size-96 rounded-full bg-primary/6 blur-3xl" />
-            <div className="absolute top-40 -left-20 size-72 rounded-full bg-accent/10 blur-3xl" />
-          </div>
-
+        <section className="relative overflow-hidden border-b border-border/70">
           <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
             <div className="mx-auto max-w-3xl text-center">
-              <Badge className="mb-6 bg-primary/10 text-primary border-0 px-4 py-1.5 text-sm">
+              <Badge className="mb-6 border-primary/20 bg-secondary/80 px-4 py-1.5 text-sm text-primary">
                 <Zap className="mr-1.5 size-3.5 inline" />
                 EdTech-платформа для учеников Центральной Азии
               </Badge>
@@ -186,12 +181,12 @@ export default function HomePage() {
         </section>
 
         {/* ── Stats ─────────────────────────────────────────────── */}
-        <section className="border-y border-border bg-primary/5">
+        <section className="section-muted">
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
             <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
               {stats.map(({ value, label, icon: Icon }) => (
                 <div key={label} className="flex flex-col items-center gap-2 text-center">
-                  <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10">
+                  <div className="flex size-10 items-center justify-center rounded-md border border-primary/15 bg-secondary">
                     <Icon className="size-5 text-primary" />
                   </div>
                   <span className="text-2xl font-bold text-foreground sm:text-3xl">{value}</span>
@@ -215,8 +210,8 @@ export default function HomePage() {
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {features.map(({ icon: Icon, title, description, color }) => (
-                <div key={title} className="rounded-xl border border-border bg-card p-6 transition-shadow hover:shadow-sm">
-                  <div className={`mb-4 flex size-11 items-center justify-center rounded-xl ${color}`}>
+                <div key={title} className="surface-card rounded-lg p-6 transition-all hover:-translate-y-0.5">
+                  <div className={`mb-4 flex size-11 items-center justify-center rounded-md ${color}`}>
                     <Icon className="size-5" />
                   </div>
                   <h3 className="mb-2 font-semibold text-foreground">{title}</h3>
@@ -228,7 +223,7 @@ export default function HomePage() {
         </section>
 
         {/* ── How it works ──────────────────────────────────────── */}
-        <section className="bg-muted/40 py-20">
+        <section className="section-muted py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center">
               <h2 className="text-balance text-3xl font-bold text-foreground sm:text-4xl">Как это работает</h2>
@@ -282,7 +277,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Featured Courses ───────────────────────────────────── */}
-        <section className="bg-muted/40 py-20">
+        <section className="section-muted py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="flex items-end justify-between">
               <div>
@@ -317,9 +312,9 @@ export default function HomePage() {
             </div>
             <div className="mt-10 grid gap-6 sm:grid-cols-3">
               {testimonials.map(({ name, grade, text, avatar, tag }) => (
-                <div key={name} className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                <div key={name} className="surface-card rounded-lg p-6">
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                    <div className="flex size-10 items-center justify-center rounded-md border border-primary/15 bg-secondary text-sm font-bold text-primary">
                       {avatar}
                     </div>
                     <div>
@@ -338,7 +333,7 @@ export default function HomePage() {
         </section>
 
         {/* ── CTA ────────────────────────────────────────────────── */}
-        <section className="bg-primary py-20">
+        <section className="bg-foreground py-20">
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
             <GraduationCap className="mx-auto size-12 text-primary-foreground/60 mb-4" />
             <h2 className="text-balance text-3xl font-bold text-primary-foreground sm:text-4xl">
@@ -363,7 +358,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-border bg-card">
+      <footer className="border-t border-border/70 bg-background/90">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
