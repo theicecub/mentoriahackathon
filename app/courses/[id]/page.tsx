@@ -1,0 +1,623 @@
+'use client'
+
+import { useMemo, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import {
+  ArrowLeft,
+  BookOpen,
+  CheckCircle,
+  ChevronRight,
+  Clock,
+  FileText,
+  GraduationCap,
+  Lock,
+  Play,
+  Users,
+  ClipboardList,
+  PenLine,
+} from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
+import { Navbar } from '@/components/navbar'
+import { courses, categoryColors, difficultyColors, type Lesson } from '@/lib/data'
+import { useApp } from '@/lib/store'
+import { cn } from '@/lib/utils'
+
+// ── Lesson type icon ───────────────────────────────────────────────────────────
+
+function LessonIcon({ type, className }: { type: Lesson['type']; className?: string }) {
+  switch (type) {
+    case 'video':
+      return <Play className={cn('size-4', className)} />
+    case 'quiz':
+      return <ClipboardList className={cn('size-4', className)} />
+    case 'assignment':
+      return <PenLine className={cn('size-4', className)} />
+    case 'reading':
+      return <FileText className={cn('size-4', className)} />
+    default:
+      return <BookOpen className={cn('size-4', className)} />
+  }
+}
+
+// ── Quiz component ─────────────────────────────────────────────────────────────
+
+function QuizSection({
+  lesson,
+  onComplete,
+}: {
+  lesson: Lesson
+  onComplete: () => void
+}) {
+  const [answers, setAnswers] = useState<number[]>(new Array(lesson.quiz?.length ?? 0).fill(-1))
+  const [submitted, setSubmitted] = useState(false)
+
+  if (!lesson.quiz) return null
+
+  const score = answers.filter((a, i) => a === lesson.quiz![i].answer).length
+  const allAnswered = answers.every((a) => a !== -1)
+
+  const handleSubmit = () => {
+    setSubmitted(true)
+    if (score === lesson.quiz!.length) onComplete()
+  }
+
+  return (
+    <div className="space-y-6">
+      {lesson.quiz.map((q, qi) => (
+        <div key={qi} className="rounded-xl border border-border bg-card p-5">
+          <p className="mb-4 font-medium text-foreground">
+            {qi + 1}. {q.question}
+          </p>
+          <div className="flex flex-col gap-2">
+            {q.options.map((opt, oi) => {
+              const isSelected = answers[qi] === oi
+              const isCorrect = oi === q.answer
+              const showResult = submitted
+
+              return (
+                <button
+                  key={oi}
+                  disabled={submitted}
+                  onClick={() => {
+                    const next = [...answers]
+                    next[qi] = oi
+                    setAnswers(next)
+                  }}
+                  className={cn(
+                    'flex items-center gap-3 rounded-lg border px-4 py-3 text-left text-sm transition-colors',
+                    showResult
+                      ? isCorrect
+                        ? 'border-green-400 bg-green-50 text-green-800'
+                        : isSelected && !isCorrect
+                        ? 'border-red-400 bg-red-50 text-red-800'
+                        : 'border-border bg-muted text-muted-foreground'
+                      : isSelected
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-border bg-background text-foreground hover:border-primary/40 hover:bg-muted'
+                  )}
+                >
+                  <span
+                    className={cn(
+                      'flex size-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold',
+                      isSelected && !submitted ? 'border-primary bg-primary text-primary-foreground' : 'border-current'
+                    )}
+                  >
+                    {String.fromCharCode(65 + oi)}
+                  </span>
+                  {opt}
+                  {showResult && isCorrect && (
+                    <CheckCircle className="ml-auto size-4 text-green-600" />
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      ))}
+
+      {!submitted ? (
+        <Button
+          onClick={handleSubmit}
+          disabled={!allAnswered}
+          className="w-full bg-primary text-primary-foreground"
+        >
+          Проверить ответы
+        </Button>
+      ) : (
+        <div
+          className={cn(
+            'rounded-xl border p-4 text-center',
+            score === lesson.quiz.length
+              ? 'border-green-300 bg-green-50'
+              : 'border-amber-300 bg-amber-50'
+          )}
+        >
+          <p
+            className={cn(
+              'text-lg font-bold',
+              score === lesson.quiz.length ? 'text-green-700' : 'text-amber-700'
+            )}
+          >
+            {score === lesson.quiz.length
+              ? 'Отлично! Все ответы верны!'
+              : `Правильных: ${score} из ${lesson.quiz.length}`}
+          </p>
+          {score < lesson.quiz.length && (
+            <p className="mt-1 text-sm text-amber-600">
+              Повтори материал урока и попробуй снова.
+            </p>
+          )}
+          {score === lesson.quiz.length && (
+            <p className="mt-1 text-sm text-green-600">Урок засчитан. Переходи к следующему!</p>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Main page ──────────────────────────────────────────────────────────────────
+
+export default function CourseDetailPage() {
+  const params = useParams()
+  const router = useRouter()
+  const { isLoggedIn, isCourseEnrolled, enrollCourse, getCourseProgress, updateCourseProgress } =
+    useApp()
+
+  const courseId = params.id as string
+  const course = useMemo(
+    () => courses.find((c) => c.id === courseId),
+    [courseId]
+  )
+
+  const enrolled = isCourseEnrolled(courseId)
+  const progressData = getCourseProgress(courseId)
+  const completedLessons = progressData?.completedLessons ?? []
+  const progressPct = course
+    ? Math.round((completedLessons.length / course.lessons.length) * 100)
+    : 0
+
+  const [activeLessonId, setActiveLessonId] = useState<string | null>(null)
+
+  if (!course) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <div className="flex flex-1 items-center justify-center">
+          <div className="text-center">
+            <p className="text-lg font-medium text-foreground">Курс не найден</p>
+            <Link href="/courses">
+              <Button variant="outline" className="mt-4">
+                Вернуться к курсам
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const activeLesson = course.lessons.find((l) => l.id === activeLessonId) ?? null
+  const isCompleted = (id: string) => completedLessons.includes(id)
+
+  const handleEnroll = () => {
+    if (!isLoggedIn) {
+      router.push('/onboarding')
+      return
+    }
+    enrollCourse(courseId)
+    setActiveLessonId(course.lessons[0].id)
+  }
+
+  const markComplete = (lessonId: string) => {
+    updateCourseProgress(courseId, lessonId)
+  }
+
+  const typeLabel: Record<Lesson['type'], string> = {
+    video: 'Видео',
+    quiz: 'Тест',
+    assignment: 'Задание',
+    reading: 'Чтение',
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+
+      {/* Course hero */}
+      <div className="border-b border-border bg-card">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+          <Link
+            href="/courses"
+            className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="size-4" />
+            Все курсы
+          </Link>
+
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
+            {/* Left: course info */}
+            <div className="flex-1 space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge
+                  className={cn(
+                    'text-xs font-medium border-0',
+                    categoryColors[course.category] || 'bg-secondary text-secondary-foreground'
+                  )}
+                >
+                  {course.category}
+                </Badge>
+                <Badge
+                  className={cn('text-xs font-medium border-0', difficultyColors[course.difficulty])}
+                >
+                  {course.difficulty}
+                </Badge>
+                {course.featured && (
+                  <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">
+                    Популярный
+                  </Badge>
+                )}
+              </div>
+
+              <h1 className="text-balance text-2xl font-bold text-foreground sm:text-3xl">
+                {course.title}
+              </h1>
+              <p className="leading-relaxed text-muted-foreground">{course.description}</p>
+
+              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <BookOpen className="size-4" />
+                  {course.lessons.length} уроков
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="size-4" />
+                  {course.duration}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Users className="size-4" />
+                  {course.grades.join(', ')} класс
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <GraduationCap className="size-4" />
+                  {course.instructor}
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                {course.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: enrollment card */}
+            <div className="w-full lg:w-72 shrink-0">
+              <Card className="border border-border shadow-sm">
+                {/* Thumbnail */}
+                <div className="relative h-36 overflow-hidden rounded-t-xl bg-gradient-to-br from-primary/15 to-primary/5">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <GraduationCap className="size-16 text-primary/20" />
+                  </div>
+                </div>
+
+                <CardContent className="p-5 space-y-4">
+                  {enrolled ? (
+                    <>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Прогресс</span>
+                          <span className="font-semibold text-primary">{progressPct}%</span>
+                        </div>
+                        <Progress value={progressPct} className="h-2" />
+                        <p className="text-xs text-muted-foreground">
+                          {completedLessons.length} из {course.lessons.length} уроков завершено
+                        </p>
+                      </div>
+                      <Button
+                        className="w-full bg-primary text-primary-foreground"
+                        onClick={() => {
+                          const next = course.lessons.find((l) => !isCompleted(l.id))
+                          setActiveLessonId(next?.id ?? course.lessons[0].id)
+                        }}
+                      >
+                        <Play className="size-4" data-icon="inline-start" />
+                        {progressPct > 0 ? 'Продолжить обучение' : 'Начать урок'}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-foreground">Бесплатно</p>
+                        <p className="text-sm text-muted-foreground">Асинхронный формат</p>
+                      </div>
+                      <Button
+                        className="w-full bg-primary text-primary-foreground"
+                        onClick={handleEnroll}
+                      >
+                        Записаться на курс
+                      </Button>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content: lesson list + viewer */}
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
+        <div className="flex flex-col gap-8 lg:flex-row">
+          {/* Lesson list */}
+          <aside className="w-full lg:w-72 shrink-0">
+            <Card className="border border-border">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-semibold">
+                  Программа курса
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="flex flex-col">
+                  {course.lessons.map((lesson, index) => {
+                    const done = isCompleted(lesson.id)
+                    const active = lesson.id === activeLessonId
+                    const accessible = enrolled
+
+                    return (
+                      <button
+                        key={lesson.id}
+                        disabled={!accessible}
+                        onClick={() => accessible && setActiveLessonId(lesson.id)}
+                        className={cn(
+                          'group flex items-start gap-3 px-4 py-3.5 text-left transition-colors',
+                          index !== course.lessons.length - 1 && 'border-b border-border',
+                          active
+                            ? 'bg-primary/8 border-l-2 border-l-primary'
+                            : 'hover:bg-muted',
+                          !accessible && 'cursor-not-allowed opacity-60'
+                        )}
+                      >
+                        {/* Status indicator */}
+                        <div
+                          className={cn(
+                            'mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full text-xs',
+                            done
+                              ? 'bg-green-100 text-green-600'
+                              : active
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-muted text-muted-foreground'
+                          )}
+                        >
+                          {done ? (
+                            <CheckCircle className="size-4" />
+                          ) : accessible ? (
+                            <LessonIcon type={lesson.type} />
+                          ) : (
+                            <Lock className="size-3" />
+                          )}
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <p
+                            className={cn(
+                              'text-sm font-medium leading-snug',
+                              active ? 'text-primary' : 'text-foreground'
+                            )}
+                          >
+                            {index + 1}. {lesson.title}
+                          </p>
+                          <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                            <span>{typeLabel[lesson.type]}</span>
+                            <ChevronRight className="size-3" />
+                            <span>{lesson.duration}</span>
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            {!enrolled && (
+              <div className="mt-4 rounded-xl border border-dashed border-border bg-card p-4 text-center">
+                <Lock className="mx-auto mb-2 size-6 text-muted-foreground/50" />
+                <p className="text-sm font-medium text-foreground">Запись открыта</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Запишитесь на курс, чтобы начать просматривать уроки
+                </p>
+                <Button
+                  size="sm"
+                  className="mt-3 w-full bg-primary text-primary-foreground"
+                  onClick={handleEnroll}
+                >
+                  Записаться
+                </Button>
+              </div>
+            )}
+          </aside>
+
+          {/* Lesson viewer */}
+          <div className="flex-1">
+            {activeLesson ? (
+              <div className="space-y-6">
+                {/* Lesson header */}
+                <div>
+                  <div className="mb-2 flex items-center gap-2">
+                    <Badge className="bg-primary/10 text-primary border-0 text-xs">
+                      {typeLabel[activeLesson.type]}
+                    </Badge>
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="size-3.5" />
+                      {activeLesson.duration}
+                    </span>
+                  </div>
+                  <h2 className="text-xl font-bold text-foreground">{activeLesson.title}</h2>
+                  <p className="mt-2 leading-relaxed text-muted-foreground">
+                    {activeLesson.description}
+                  </p>
+                </div>
+
+                <Separator />
+
+                {/* Video */}
+                {activeLesson.type === 'video' && activeLesson.videoUrl && (
+                  <div className="space-y-5">
+                    <div className="relative overflow-hidden rounded-xl bg-black aspect-video shadow-lg">
+                      <iframe
+                        src={activeLesson.videoUrl}
+                        title={activeLesson.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="absolute inset-0 size-full"
+                      />
+                    </div>
+
+                    {!isCompleted(activeLesson.id) && (
+                      <Button
+                        className="bg-primary text-primary-foreground"
+                        onClick={() => markComplete(activeLesson.id)}
+                      >
+                        <CheckCircle className="size-4" data-icon="inline-start" />
+                        Отметить как завершённый
+                      </Button>
+                    )}
+                    {isCompleted(activeLesson.id) && (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle className="size-5" />
+                        <span className="font-medium">Урок завершён</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Quiz */}
+                {activeLesson.type === 'quiz' && (
+                  <div className="space-y-4">
+                    <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
+                      <p className="text-sm font-medium text-primary">
+                        Ответьте на все вопросы, чтобы засчитать тест.
+                      </p>
+                    </div>
+                    {isCompleted(activeLesson.id) ? (
+                      <div className="flex items-center gap-2 rounded-xl border border-green-300 bg-green-50 p-4 text-green-700">
+                        <CheckCircle className="size-5" />
+                        <span className="font-medium">Тест пройден!</span>
+                      </div>
+                    ) : (
+                      <QuizSection
+                        lesson={activeLesson}
+                        onComplete={() => markComplete(activeLesson.id)}
+                      />
+                    )}
+                  </div>
+                )}
+
+                {/* Assignment */}
+                {activeLesson.type === 'assignment' && (
+                  <div className="space-y-4">
+                    <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+                      <div className="mb-3 flex items-center gap-2">
+                        <PenLine className="size-5 text-amber-600" />
+                        <span className="font-semibold text-amber-800">Практическое задание</span>
+                      </div>
+                      <p className="text-sm leading-relaxed text-amber-700">
+                        {activeLesson.description}
+                      </p>
+                    </div>
+
+                    {!isCompleted(activeLesson.id) && (
+                      <Button
+                        className="bg-primary text-primary-foreground"
+                        onClick={() => markComplete(activeLesson.id)}
+                      >
+                        <CheckCircle className="size-4" data-icon="inline-start" />
+                        Отметить задание как выполненное
+                      </Button>
+                    )}
+                    {isCompleted(activeLesson.id) && (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle className="size-5" />
+                        <span className="font-medium">Задание выполнено</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Nav between lessons */}
+                <Separator />
+                <div className="flex items-center justify-between gap-4">
+                  {(() => {
+                    const idx = course.lessons.findIndex((l) => l.id === activeLesson.id)
+                    const prev = idx > 0 ? course.lessons[idx - 1] : null
+                    const next = idx < course.lessons.length - 1 ? course.lessons[idx + 1] : null
+
+                    return (
+                      <>
+                        <Button
+                          variant="outline"
+                          disabled={!prev}
+                          onClick={() => prev && setActiveLessonId(prev.id)}
+                        >
+                          <ArrowLeft className="size-4" data-icon="inline-start" />
+                          Предыдущий
+                        </Button>
+                        {next ? (
+                          <Button
+                            className="bg-primary text-primary-foreground"
+                            onClick={() => setActiveLessonId(next.id)}
+                          >
+                            Следующий урок
+                            <ChevronRight className="size-4" data-icon="inline-end" />
+                          </Button>
+                        ) : (
+                          <div className="flex items-center gap-2 text-green-600 font-medium">
+                            <CheckCircle className="size-5" />
+                            Курс завершён!
+                          </div>
+                        )}
+                      </>
+                    )
+                  })()}
+                </div>
+              </div>
+            ) : (
+              // Welcome screen
+              <div className="flex h-full flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card py-20 text-center">
+                <div className="mb-4 flex size-16 items-center justify-center rounded-2xl bg-primary/10">
+                  <BookOpen className="size-8 text-primary" />
+                </div>
+                <h2 className="text-lg font-bold text-foreground">
+                  {enrolled ? 'Выбери урок для начала' : 'Запишись на курс'}
+                </h2>
+                <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+                  {enrolled
+                    ? 'Нажми на любой урок в списке слева, чтобы начать обучение.'
+                    : 'Запишись на курс бесплатно, чтобы получить доступ ко всем урокам.'}
+                </p>
+                {!enrolled && (
+                  <Button
+                    className="mt-6 bg-primary text-primary-foreground"
+                    onClick={handleEnroll}
+                  >
+                    Записаться бесплатно
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
