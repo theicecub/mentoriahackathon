@@ -55,6 +55,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/80 backdrop-blur-xl">
+      {/* Main row */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5">
@@ -174,8 +175,9 @@ export function Navbar() {
             {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
+      </div>{/* ← закрываем основной flex-контейнер */}
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — внутри <header>, но вне основного div */}
       {mobileOpen && (
         <div className="border-t border-border/70 bg-background/95 px-4 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
