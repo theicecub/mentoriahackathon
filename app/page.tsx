@@ -136,10 +136,6 @@ export default function HomePage() {
         <section className="relative overflow-hidden border-b border-border/70">
           <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
             <div className="mx-auto max-w-3xl text-center">
-              <Badge className="mb-6 border-primary/20 bg-secondary/80 px-4 py-1.5 text-sm text-primary">
-                <Zap className="mr-1.5 size-3.5 inline" />
-                EdTech-платформа для учеников Центральной Азии
-              </Badge>
 
               <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
                 Возможности и курсы —
