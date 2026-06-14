@@ -30,6 +30,8 @@ export interface AppState {
   // Admin data
   adminOpportunities: import('./data').Opportunity[]
   adminCourses: import('./data').Course[]
+  // Theme
+  theme: 'light' | 'dark'
 }
 
 interface AppContextValue extends AppState {
@@ -38,6 +40,8 @@ interface AppContextValue extends AppState {
   completeOnboarding: (profile: UserProfile) => void
   saveOpportunity: (id: string) => void
   unsaveOpportunity: (id: string) => void
+  toggleTheme: () => void
+  setTheme: (theme: 'light' | 'dark') => void
   isOpportunitySaved: (id: string) => boolean
   enrollCourse: (courseId: string) => void
   updateCourseProgress: (courseId: string, lessonId: string) => void
@@ -65,6 +69,7 @@ const defaultState: AppState = {
   enrolledCourses: [],
   adminOpportunities: [],
   adminCourses: [],
+  theme: 'light',
 }
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
@@ -212,6 +217,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }))
   }, [])
 
+  const toggleTheme = useCallback(() => {
+    setState((s) => ({
+      ...s,
+      theme: s.theme === 'light' ? 'dark' : 'light',
+    }))
+  }, [])
+
+  const setTheme = useCallback((theme: 'light' | 'dark') => {
+    setState((s) => ({
+      ...s,
+      theme,
+    }))
+  }, [])
+
   if (!hydrated) return null
 
   return (
@@ -234,6 +253,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         addCourse,
         updateCourse,
         deleteCourse,
+        toggleTheme,
+        setTheme,
       }}
     >
       {children}

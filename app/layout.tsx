@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { AppProvider } from '@/lib/store'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light',
+  colorScheme: 'light dark',
   themeColor: '#176d73',
   width: 'device-width',
   initialScale: 1,
@@ -43,7 +44,11 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </AppProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
