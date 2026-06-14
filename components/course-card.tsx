@@ -29,13 +29,13 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
   }
 
   return (
-    <Card className="group flex flex-col overflow-hidden transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_24px_60px_-42px_oklch(0.17_0.02_215_/_0.55)]">
+    <Card className="group flex flex-col overflow-hidden transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_24px_60px_-42px_oklch(0.17_0.02_215_/_0.55)] dark:hover:shadow-[0_24px_60px_-42px_oklch(0_0_0_/_0.7)]">
       {/* Thumbnail */}
-      <div className="relative h-36 overflow-hidden border-b border-border/70 bg-[linear-gradient(135deg,oklch(0.94_0.025_188),oklch(0.98_0.01_135)_55%,oklch(0.93_0.035_74))]">
-        <div className="absolute inset-0 opacity-45 [background-image:linear-gradient(to_right,oklch(0.55_0.04_190_/_0.14)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.55_0.04_190_/_0.14)_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="relative h-36 overflow-hidden border-b border-border/70 bg-[linear-gradient(135deg,oklch(0.94_0.025_188),oklch(0.98_0.01_135)_55%,oklch(0.93_0.035_74))] dark:bg-[linear-gradient(135deg,oklch(0.18_0.04_210),oklch(0.22_0.03_225)_55%,oklch(0.20_0.05_175))]">
+        <div className="absolute inset-0 opacity-30 dark:opacity-50 [background-image:linear-gradient(to_right,oklch(0.55_0.04_190_/_0.18)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.55_0.04_190_/_0.18)_1px,transparent_1px)] [background-size:28px_28px]" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex size-16 items-center justify-center rounded-lg border border-primary/15 bg-card/65 shadow-sm backdrop-blur-sm">
-            <GraduationCap className="size-8 text-primary/70" />
+          <div className="flex size-16 items-center justify-center rounded-lg border border-primary/20 bg-card/70 shadow-sm backdrop-blur-sm dark:bg-card/40">
+            <GraduationCap className="size-8 text-primary/80" />
           </div>
         </div>
         <div className="absolute bottom-2 right-2">

@@ -30,11 +30,14 @@ export interface AppState {
   // Admin data
   adminOpportunities: import('./data').Opportunity[]
   adminCourses: import('./data').Course[]
+  // Theme
+  theme: 'dark' | 'light'
 }
 
 interface AppContextValue extends AppState {
   login: (profile: UserProfile) => void
   logout: () => void
+  toggleTheme: () => void
   completeOnboarding: (profile: UserProfile) => void
   saveOpportunity: (id: string) => void
   unsaveOpportunity: (id: string) => void
@@ -65,6 +68,7 @@ const defaultState: AppState = {
   enrolledCourses: [],
   adminOpportunities: [],
   adminCourses: [],
+  theme: 'dark',
 }
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
@@ -92,6 +96,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
     }
   }, [state, hydrated])
+
+  // Apply theme class to <html>
+  useEffect(() => {
+    if (!hydrated) return
+    const root = document.documentElement
+    if (state.theme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }, [state.theme, hydrated])
+
+  const toggleTheme = useCallback(() => {
+    setState((s) => ({ ...s, theme: s.theme === 'dark' ? 'light' : 'dark' }))
+  }, [])
 
   const login = useCallback((profile: UserProfile) => {
     setState((s) => ({ ...s, isLoggedIn: true, user: profile, onboardingComplete: true }))
@@ -220,6 +239,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         ...state,
         login,
         logout,
+        toggleTheme,
         completeOnboarding,
         saveOpportunity,
         unsaveOpportunity,

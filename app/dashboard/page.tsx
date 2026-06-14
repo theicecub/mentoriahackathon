@@ -152,6 +152,21 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* ── AI Assistant callout ───────────────────────────────── */}
+        <div className="mb-6 flex items-center gap-3 rounded-xl border border-primary/25 bg-primary/8 px-4 py-3">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/20">
+            <Sparkles className="size-4 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-foreground">
+              Mentoria AI знает, что тебе подойдёт
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Нажми на кнопку <span className="font-medium text-primary">AI-помощник</span> внизу справа, чтобы получить персональные рекомендации
+            </p>
+          </div>
+        </div>
+
         {/* ── Stats row ──────────────────────────────────────────── */}
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
@@ -159,25 +174,25 @@ export default function DashboardPage() {
               label: 'Сохранено',
               value: savedOpportunities.length,
               icon: Bookmark,
-              color: 'bg-blue-50 text-blue-600',
+              color: 'bg-blue-500/15 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300',
             },
             {
               label: 'Курсов начато',
               value: inProgressCount,
               icon: Play,
-              color: 'bg-amber-50 text-amber-600',
+              color: 'bg-amber-500/15 text-amber-500 dark:bg-amber-500/20 dark:text-amber-300',
             },
             {
               label: 'Курсов завершено',
               value: completedCount,
               icon: CheckCircle,
-              color: 'bg-green-50 text-green-600',
+              color: 'bg-emerald-500/15 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300',
             },
             {
               label: 'Дедлайнов скоро',
               value: upcomingDeadlines.length,
               icon: Calendar,
-              color: 'bg-rose-50 text-rose-600',
+              color: 'bg-rose-500/15 text-rose-500 dark:bg-rose-500/20 dark:text-rose-300',
             },
           ].map(({ label, value, icon: Icon, color }) => (
             <Card key={label}>
@@ -254,7 +269,7 @@ export default function DashboardPage() {
                           <Progress value={pct} className="h-1.5" />
                           <p className="mt-1 text-xs text-muted-foreground">
                             {pct === 100 ? (
-                              <span className="text-green-600 font-medium">Завершён</span>
+                              <span className="text-emerald-500 dark:text-emerald-400 font-medium">Завершён</span>
                             ) : (
                               `${pct}% завершено`
                             )}
@@ -417,7 +432,7 @@ export default function DashboardPage() {
                               className={cn(
                                 'shrink-0 text-xs border-0',
                                 isUrgent
-                                  ? 'bg-rose-100 text-rose-700'
+                                  ? 'bg-rose-500/15 text-rose-500 dark:bg-rose-500/25 dark:text-rose-300'
                                   : 'bg-secondary text-secondary-foreground'
                               )}
                             >

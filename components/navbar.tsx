@@ -10,7 +10,9 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Moon,
   Settings,
+  Sun,
   User,
   X,
 } from 'lucide-react'
@@ -34,7 +36,7 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
-  const { isLoggedIn, user, logout } = useApp()
+  const { isLoggedIn, user, logout, toggleTheme, theme } = useApp()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const initials = user?.name
@@ -85,6 +87,13 @@ export function Navbar() {
 
         {/* Desktop Right */}
         <div className="hidden items-center gap-2 md:flex">
+          <button
+            onClick={toggleTheme}
+            className="flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
+            aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+          >
+            {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+          </button>
           {isLoggedIn ? (
             <>
               <Link href="/dashboard">
@@ -148,15 +157,23 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="flex size-9 items-center justify-center rounded-md transition-colors hover:bg-secondary/70 md:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Меню"
-        >
-          {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
-      </div>
+        {/* Mobile right actions */}
+        <div className="flex items-center gap-1 md:hidden">
+          <button
+            onClick={toggleTheme}
+            className="flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
+            aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+          >
+            {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+          </button>
+          <button
+            className="flex size-9 items-center justify-center rounded-md transition-colors hover:bg-secondary/70"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Меню"
+          >
+            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
 
       {/* Mobile Menu */}
       {mobileOpen && (

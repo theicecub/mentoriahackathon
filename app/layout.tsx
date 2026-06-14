@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { AppProvider } from '@/lib/store'
+import { AIAssistant } from '@/components/ai-assistant'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -29,8 +30,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light',
-  themeColor: '#176d73',
+  colorScheme: 'dark light',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#0d1a2e' },
+    { media: '(prefers-color-scheme: light)', color: '#f8faf8' },
+  ],
   width: 'device-width',
   initialScale: 1,
 }
@@ -41,9 +45,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ru" className={`${inter.variable} ${geistMono.variable} bg-background`}>
+    <html lang="ru" className={`${inter.variable} ${geistMono.variable} dark bg-background`}>
       <body className="font-sans antialiased">
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>
+          {children}
+          <AIAssistant />
+        </AppProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
