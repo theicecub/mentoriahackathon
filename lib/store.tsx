@@ -30,6 +30,8 @@ export interface AppState {
   // Admin data
   adminOpportunities: import('./data').Opportunity[]
   adminCourses: import('./data').Course[]
+  // Theme
+  theme: 'light' | 'dark'
 }
 
 interface AppContextValue extends AppState {
@@ -49,6 +51,8 @@ interface AppContextValue extends AppState {
   addCourse: (course: import('./data').Course) => void
   updateCourse: (course: import('./data').Course) => void
   deleteCourse: (id: string) => void
+  toggleTheme: () => void
+  setTheme: (theme: 'light' | 'dark') => void
 }
 
 // ─── Context ──────────────────────────────────────────────────────────────────
@@ -65,6 +69,7 @@ const defaultState: AppState = {
   enrolledCourses: [],
   adminOpportunities: [],
   adminCourses: [],
+  theme: 'light',
 }
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
@@ -212,6 +217,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }))
   }, [])
 
+  const toggleTheme = useCallback(() => {
+    setState((s) => ({ ...s, theme: s.theme === 'light' ? 'dark' : 'light' }))
+  }, [])
+
+  const setTheme = useCallback((theme: 'light' | 'dark') => {
+    setState((s) => ({ ...s, theme }))
+  }, [])
+
   if (!hydrated) return null
 
   return (
@@ -234,6 +247,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         addCourse,
         updateCourse,
         deleteCourse,
+        toggleTheme,
+        setTheme,
       }}
     >
       {children}
