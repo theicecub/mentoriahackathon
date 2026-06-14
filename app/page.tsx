@@ -23,12 +23,6 @@ import { CourseCard } from '@/components/course-card'
 import { opportunities, courses } from '@/lib/data'
 import { useApp } from '@/lib/store'
 
-const stats = [
-  { value: '200+', label: 'Образовательных возможностей', icon: Compass },
-  { value: '50+', label: 'Асинхронных курсов', icon: BookOpen },
-  { value: '5 000+', label: 'Активных учеников', icon: Users },
-  { value: '40+', label: 'Стран-участников', icon: Globe },
-]
 
 const features = [
   {
@@ -167,22 +161,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Stats ─────────────────────────────────────────────── */}
-        <section className="section-muted">
-          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-            <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-              {stats.map(({ value, label, icon: Icon }) => (
-                <div key={label} className="flex flex-col items-center gap-2 text-center">
-                  <div className="flex size-10 items-center justify-center rounded-md border border-primary/15 bg-secondary">
-                    <Icon className="size-5 text-primary" />
-                  </div>
-                  <span className="text-2xl font-bold text-foreground sm:text-3xl">{value}</span>
-                  <span className="text-xs text-muted-foreground sm:text-sm">{label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ── Features ──────────────────────────────────────────── */}
         <section className="py-20">
