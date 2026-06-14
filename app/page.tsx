@@ -240,8 +240,7 @@ export default function HomePage() {
             </div>
             <div className="mt-10 text-center">
               <Link href="/onboarding">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-10">
-                  Присоединиться к Mentoria
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-10">Присоединиться к Mentoria
                   <ArrowRight className="size-4" data-icon="inline-end" />
                 </Button>
               </Link>

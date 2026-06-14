@@ -133,16 +133,17 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
       </CardContent>
 
       <CardFooter className="gap-2 border-t-0 bg-transparent pt-0">
-        <Button
-          className="flex-1 text-sm"
-          size="sm"
-          asChild
-        >
-          <a href={opportunity.link} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="size-3.5" data-icon="inline-end" />
-            Подать заявку
-          </a>
-        </Button>
+        <Button className="flex-1 text-sm" size="sm" asChild>
+  <a
+    href={opportunity.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2"
+  >
+    <ExternalLink className="h-3.5 w-3.5" />
+    <span>Подать заявку</span>
+  </a>
+</Button>
       </CardFooter>
     </Card>
   )
