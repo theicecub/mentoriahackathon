@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.82",
     "@ai-sdk/react": "^3.0.207",
     "@base-ui/react": "^1.5.0",
     "@vercel/analytics": "1.6.1",
