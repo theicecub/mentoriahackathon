@@ -163,15 +163,6 @@ export default function HomePage() {
                   </Button>
                 </Link>
               </div>
-
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-                {['Бесплатно', 'Без рекламы', 'На русском языке', 'Для 7–11 класса'].map((item) => (
-                  <span key={item} className="flex items-center gap-1.5">
-                    <CheckCircle className="size-4 text-primary" />
-                    {item}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
         </section>
