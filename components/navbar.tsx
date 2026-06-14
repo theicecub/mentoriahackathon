@@ -10,9 +10,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  Moon,
   Settings,
-  Sun,
   User,
   X,
 } from 'lucide-react'
@@ -36,7 +34,7 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
-  const { isLoggedIn, user, logout, theme, toggleTheme } = useApp()
+  const { isLoggedIn, user, logout } = useApp()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const initials = user?.name
@@ -87,16 +85,6 @@ export function Navbar() {
 
         {/* Desktop Right */}
         <div className="hidden items-center gap-2 md:flex">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleTheme}
-            aria-label="Переключить тему"
-            className="p-2"
-          >
-            {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
-          </Button>
-
           {isLoggedIn ? (
             <>
               <Link href="/dashboard">
@@ -173,21 +161,6 @@ export function Navbar() {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="border-t border-border/70 bg-background/95 px-4 py-4 md:hidden">
-          <div className="mb-4 flex items-center gap-2 pb-4 border-b border-border/50">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              aria-label="Переключить тему"
-              className="p-2"
-            >
-              {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
-            </Button>
-            <span className="text-sm text-muted-foreground">
-              {theme === 'dark' ? 'Светлая' : 'Тёмная'} тема
-            </span>
-          </div>
-
           <nav className="flex flex-col gap-1">
             {navLinks.map(({ href, label, icon: Icon }) => (
               <Link
