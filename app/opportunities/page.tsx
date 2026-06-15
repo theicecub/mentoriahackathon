@@ -69,7 +69,7 @@ export default function OpportunitiesPage() {
   const activeFilters = [
     category !== ALL && category,
     format !== ALL && format,
-    grade !== ALL && `${grade} кл.`,
+    grade !== ALL && `${grade}`,
   ].filter(Boolean) as string[]
 
   const clearFilters = () => {
@@ -146,7 +146,7 @@ export default function OpportunitiesPage() {
                   : 'border-border/80 text-muted-foreground hover:border-primary/40 hover:text-foreground'
               )}
             >
-              {g === ALL ? 'Все' : `${g} кл.`}
+              {g === ALL ? 'Все' : `${g}`}
             </button>
           ))}
         </div>
