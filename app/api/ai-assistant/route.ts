@@ -1,5 +1,5 @@
 import { streamText, convertToModelMessages } from 'ai'
-import { groq } from '@ai-sdk/groq'
+import groq from '@ai-sdk/groq'
 import { opportunities, courses } from '@/lib/data'
 
 export const maxDuration = 30
