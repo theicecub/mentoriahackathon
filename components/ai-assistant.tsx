@@ -107,7 +107,7 @@ export function AIAssistant() {
                 <Sparkles className="size-4" />
               </div>
               <div>
-                <p className="text-sm font-semibold leading-none ai-header-title">Mentoria AI</p>
+                <p className="text-sm font-semibold leading-none ai-header-title text-white">Mentoria AI</p>
                 <p className="mt-0.5 text-xs ai-header-sub">
                   {isLoggedIn ? `Привет, ${user?.name?.split(' ')[0]}` : 'Ассистент'}
                 </p>
