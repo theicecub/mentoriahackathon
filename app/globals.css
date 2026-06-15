@@ -215,8 +215,8 @@ html { scroll-behavior: smooth; }
 /* Transitions */
 * { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
 
-/* ── AI Assistant panel styles (always dark) ─────────────────────────────── */
-:root {
+/* ── AI Assistant panel styles (light mode) ─────────────────────────────── */
+:root:not(.dark) {
   --ai-bg: oklch(0.995 0.003 220);
   --ai-header: oklch(0.43 0.105 188);
   --ai-border: oklch(0.43 0.105 188 / 30%);
