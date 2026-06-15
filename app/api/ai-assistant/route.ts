@@ -1,5 +1,5 @@
 import { streamText, convertToModelMessages } from 'ai'
-import groq from '@ai-sdk/groq'
+import { groq } from '@ai-sdk/groq'
 import { opportunities, courses } from '@/lib/data'
 
 export const maxDuration = 30
@@ -50,7 +50,6 @@ ${coursesSummary}
     model: groq('llama-3.3-70b-versatile'),
     system: systemPrompt,
     messages: await convertToModelMessages(messages),
-    maxTokens: 1024,
   })
 
   return result.toUIMessageStreamResponse()
