@@ -250,26 +250,20 @@ export function AIAssistant() {
 
       {/* ── FAB toggle button ───────────────────────────────────────────── */}
       <button
-        onClick={() => setOpen((v) => !v)}
-        className={cn(
-          'fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full px-4 py-3 shadow-lg transition-all duration-300 sm:bottom-6 sm:right-6',
-          'ai-fab',
-          open && 'ai-fab-open'
-        )}
-        aria-label={open ? 'Закрыть ассистента' : 'Открыть AI-ассистента'}
-      >
-        <Sparkles className="size-5" />
-        {!open && (
-          <span className="text-sm font-semibold pr-1">AI-помощник</span>
-        )}
-        {open && <ChevronDown className="size-4" />}
-        {messages.length === 0 && !open && (
-          <span className="absolute -top-1 -right-1 flex size-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ai-ping" />
-            <span className="relative inline-flex rounded-full size-3 ai-ping-dot" />
-          </span>
-        )}
-      </button>
+  onClick={() => setOpen((v) => !v)}
+  className={cn(
+    'fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full px-4 py-3 shadow-lg transition-all duration-300 sm:bottom-6 sm:right-6',
+    'ai-fab',
+    open && 'ai-fab-open'
+  )}
+  aria-label={open ? 'Закрыть ассистента' : 'Открыть AI-ассистента'}
+>
+  <Sparkles className="size-5" />
+  {!open && (
+    <span className="text-sm font-semibold pr-1">AI-помощник</span>
+  )}
+  {open && <ChevronDown className="size-4" />}
+</button>
     </>
   )
 }
