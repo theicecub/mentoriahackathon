@@ -123,22 +123,6 @@ export const opportunities: Opportunity[] = [
     logo: 'Y',
   },
   {
-    id: 'op-5',
-    title: 'Зимняя школа НИШ по физике и математике',
-    organization: 'Назарбаев Интеллектуальные Школы',
-    category: 'STEM',
-    format: 'Офлайн',
-    deadline: '2024-12-20',
-    description:
-      'Интенсивная зимняя школа для одарённых учеников по физике, математике и информатике. Занятия ведут профессора ведущих университетов.',
-    requirements: ['9–11 класс', 'Средний балл 4.5+', 'Тест по математике и физике'],
-    grades: ['9', '10', '11'],
-    tags: ['STEM', 'Физика', 'Математика', 'Казахстан'],
-    link: '#',
-    logo: 'Н',
-    featured: true,
-  },
-  {
     id: 'op-6',
     title: 'Harvard Secondary School Program',
     organization: 'Harvard University',
