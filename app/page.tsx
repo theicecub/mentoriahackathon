@@ -299,7 +299,7 @@ export default function HomePage() {
         {/* ── CTA ────────────────────────────────────────────────── */}
         <section className="bg-foreground dark:bg-card py-20">
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-            <GraduationCap className="mx-auto size-12 text-primary-foreground/60 mb-4" />
+            <GraduationCap className="mx-auto size-12 text-primary-foreground/60 mb-4 dark:text-white" />
             <h2 className="text-balance text-3xl font-bold text-primary-foreground dark:text-card-foreground sm:text-4xl">
               Готов начать свой путь?
             </h2>
@@ -313,9 +313,9 @@ export default function HomePage() {
                 </Button>
               </Link>
               <Link href="/courses">
-                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 dark:border-primary/30 dark:text-card-foreground dark:hover:bg-primary/10 px-8">
-                  Смотреть курсы
-                </Button>
+                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground dark:border-primary/30 dark:text-card-foreground dark:hover:bg-primary/10 px-8">
+  Смотреть курсы
+</Button>
               </Link>
             </div>
           </div>
