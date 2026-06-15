@@ -115,15 +115,15 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
       <CardFooter className="gap-2 border-t-0 bg-transparent pt-0">
         {enrolled ? (
           <Button
-            className="flex-1 text-sm"
-            size="sm"
-            asChild
-          >
-            <Link href={`/courses/${course.id}`}>
-              <Play className="size-3.5" data-icon="inline-start" />
-              {progressPct > 0 ? 'Продолжить' : 'Начать'}
-            </Link>
-          </Button>
+  className="flex-1 text-sm"
+  size="sm"
+  asChild
+>
+  <Link href={`/courses/${course.id}`} className="flex items-center gap-2">
+    <Play className="size-3.5" />
+    {progressPct > 0 ? 'Продолжить' : 'Начать'}
+  </Link>
+</Button>
         ) : (
           <div className="flex flex-1 gap-2">
             <Button
