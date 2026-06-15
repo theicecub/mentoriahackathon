@@ -199,7 +199,7 @@ export default function OpportunitiesPage() {
             </div>
 
             <Select value={sortBy} onValueChange={(v: 'deadline' | 'title') => setSortBy(v)}>
-              <SelectTrigger className="h-full w-40">
+              <SelectTrigger className="h-13 w-40">
                   <span>{sortBy === 'deadline' ? 'По дедлайну' : 'По названию'}</span>
               </SelectTrigger>
               <SelectContent>
