@@ -97,7 +97,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
           </span>
           <span className="flex items-center gap-1 rounded-md bg-muted/45 px-2 py-1">
             <Users className="size-3.5" />
-            {course.grades.join(', ')} кл.
+            {course.grades.join(', ')}
           </span>
         </div>
 
