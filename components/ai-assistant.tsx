@@ -102,13 +102,13 @@ export function AIAssistant() {
 
           {/* Header */}
           <div className="ai-header flex items-center justify-between px-4 py-3">
-            <div className="flex items-center gap-2.5 text-white">
+            <div className="flex items-center gap-2.5">
   <div className="ai-avatar flex size-8 items-center justify-center rounded-full">
     <Sparkles className="size-4" />
   </div>
   <div>
-    <p className="text-sm font-semibold leading-none ai-header-title">Mentoria AI-Bot</p>
-    <p className="mt-0.5 text-xs ai-header-sub">
+    <p className="text-sm font-semibold leading-none ai-header-title !text-white">Mentoria AI-Bot</p>
+    <p className="mt-0.5 text-xs ai-header-sub !text-white">
       {isLoggedIn ? `Привет, ${user?.name?.split(' ')[0]}` : 'Ассистент'}
     </p>
   </div>
