@@ -175,7 +175,7 @@ export default function CoursesPage() {
                     : 'border-border/80 text-muted-foreground hover:border-primary/40'
                 )}
               >
-                {g === ALL ? 'Все классы' : `${g} кл.`}
+                {g === ALL ? 'Все классы' : `${g}`}
               </button>
             ))}
 
