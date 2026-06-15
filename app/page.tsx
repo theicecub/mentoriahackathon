@@ -300,20 +300,20 @@ export default function HomePage() {
         <section className="bg-foreground dark:bg-card py-20">
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
             <GraduationCap className="mx-auto size-12 text-primary-foreground/60 mb-4" />
-            <h2 className="text-balance text-3xl font-bold text-primary-foreground sm:text-4xl">
+            <h2 className="text-balance text-3xl font-bold text-primary-foreground dark:text-card-foreground sm:text-4xl">
               Готов начать свой путь?
             </h2>
-            <p className="mt-4 text-lg text-primary-foreground/70">
+            <p className="mt-4 text-lg text-primary-foreground/70 dark:text-card-foreground/70">
               Присоединись к тысячам учеников, которые уже используют Mentoria Hub для достижения своих образовательных целей.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href="/onboarding">
-                <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8">
+                <Link href="/onboarding">
+                <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 dark:bg-primary dark:text-primary-foreground px-8">
                   Создать профиль <ArrowRight className="size-4" data-icon="inline-end" />
                 </Button>
               </Link>
               <Link href="/courses">
-                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground*10 px-8">
+                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 dark:border-primary/30 dark:text-card-foreground dark:hover:bg-primary/10 px-8">
                   Смотреть курсы
                 </Button>
               </Link>
