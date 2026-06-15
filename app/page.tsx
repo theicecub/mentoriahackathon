@@ -297,7 +297,7 @@ export default function HomePage() {
         </section>
 
         {/* ── CTA ────────────────────────────────────────────────── */}
-        <section className="bg-foreground py-20">
+        <section className="bg-foreground dark:bg-card py-20">
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
             <GraduationCap className="mx-auto size-12 text-primary-foreground/60 mb-4" />
             <h2 className="text-balance text-3xl font-bold text-primary-foreground sm:text-4xl">
