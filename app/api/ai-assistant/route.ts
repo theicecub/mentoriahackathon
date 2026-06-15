@@ -1,5 +1,5 @@
 import { streamText, convertToModelMessages } from 'ai'
-import { google } from '@ai-sdk/google'
+import { groq } from '@ai-sdk/groq'
 import { opportunities, courses } from '@/lib/data'
 
 export const maxDuration = 30
@@ -47,10 +47,10 @@ ${coursesSummary}
 Не выдумывай возможности или курсы, которых нет в списке выше. Если что-то не знаешь — скажи честно.`
 
   const result = streamText({
-    model: google('gemini-2.0-flash'),
+    model: groq('llama-3.3-70b-versatile'),
     system: systemPrompt,
     messages: await convertToModelMessages(messages),
-    maxOutputTokens: 1024,
+    maxTokens: 1024,
   })
 
   return result.toUIMessageStreamResponse()
