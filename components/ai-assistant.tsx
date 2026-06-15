@@ -115,7 +115,7 @@ export function AIAssistant() {
 </div>
             <button
               onClick={() => setOpen(false)}
-              className="ai-close flex size-7 items-center justify-center rounded-full transition-colors"
+              className="ai-close flex size-7 items-center justify-center rounded-full transition-colors text-white hover:text-black"
               aria-label="Закрыть"
             >
               <X className="size-4" />
