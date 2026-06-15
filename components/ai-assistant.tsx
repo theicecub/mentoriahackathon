@@ -102,7 +102,7 @@ export function AIAssistant() {
 
           {/* Header */}
           <div className="ai-header flex items-center justify-between px-4 py-3">
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 text-white">
   <div className="ai-avatar flex size-8 items-center justify-center rounded-full">
     <Sparkles className="size-4" />
   </div>
