@@ -365,7 +365,7 @@ export const opportunities: Opportunity[] = [
     organization: 'UNICEF Казахстан',
     category: 'Социальное влияние',
     format: 'Гибридный',
-    deadline: '2026-10-01',
+    deadline: '2026-06-18',
     description:
       'Платформа волонтёрства и образовательных проектов для молодёжи: онлайн-курсы и реальные проекты в области прав, экологии и инклюзии.',
     requirements: ['16–35 лет'],
