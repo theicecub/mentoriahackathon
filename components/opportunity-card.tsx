@@ -66,7 +66,7 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
               {opportunity.category}
             </Badge>
             {opportunity.featured && (
-              <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs">
+              <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs dark:text-white">
                 Рекомендуем
               </Badge>
             )}
