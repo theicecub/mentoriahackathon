@@ -26,6 +26,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Navbar } from '@/components/navbar'
 import { OpportunityCard } from '@/components/opportunity-card'
 import { CourseCard } from '@/components/course-card'
+import DeadlineCalendar from '@/components/deadline-calendar'
 import {
   opportunities,
   courses,
@@ -403,15 +404,17 @@ export default function DashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
+                <DeadlineCalendar opportunities={savedOps} />
+
                 {upcomingDeadlines.length === 0 ? (
-                  <div className="text-center py-4">
+                  <div className="text-center py-3">
                     <p className="text-sm text-muted-foreground">Нет ближайших дедлайнов</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Сохраняй возможности, чтобы отслеживать их дедлайны
                     </p>
                   </div>
                 ) : (
-                  <ul className="flex flex-col gap-3">
+                  <ul className="mt-3 flex flex-col gap-3">
                     {upcomingDeadlines.map((op, i) => {
                       const days = Math.ceil(
                         (new Date(op.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
