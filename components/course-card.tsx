@@ -57,7 +57,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
         )}
         {course.featured && !enrolled && (
           <div className="absolute left-2 top-2">
-            <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs">
+            <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs dark:text-white">
               Популярный
             </Badge>
           </div>
