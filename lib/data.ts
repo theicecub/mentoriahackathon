@@ -380,7 +380,7 @@ export const opportunities: Opportunity[] = [
     organization: 'American Councils',
     category: 'Социальное влияние',
     format: 'Офлайн',
-    deadline: '2026-09-01',
+    deadline: '2026-06-20',
     description:
       'Полностью оплачиваемая программа обмена для старшеклассников: год обучения в американской школе и проживание в гостевой семье.',
     requirements: ['8–10 класс', 'Отбор'],
