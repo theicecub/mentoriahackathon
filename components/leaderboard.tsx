@@ -61,20 +61,11 @@ export default function Leaderboard({ limit = 5 }: { limit?: number }) {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-sm font-semibold text-foreground">{r.score}</div>
-                  <Button variant="ghost" size="sm" onClick={() => alert(JSON.stringify(r.details, null, 2))}>
-                    Разбивка
-                  </Button>
                 </div>
               </li>
             ))}
           </ol>
         )}
-        <Separator className="my-3" />
-        <div className="flex justify-end">
-          <Button size="sm" variant="outline" onClick={() => window.location.href = '/dashboard'}>
-            Полный дашборд
-          </Button>
-        </div>
       </CardContent>
     </Card>
   )
