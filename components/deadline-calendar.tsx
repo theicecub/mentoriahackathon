@@ -81,19 +81,16 @@ export default function DeadlineCalendar({ opportunities }: { opportunities: Opp
         </div>
       </div>
 
-      <div className="mt-2 -mx-2 px-2">
-        <div className="overflow-x-auto">
-          <div className="min-w-[640px] md:min-w-0">
-            <div className="grid grid-cols-7 gap-1 text-xs text-muted-foreground">
-              {weekdays.map((w) => (
-                <div key={w} className="text-center text-[11px] sm:text-sm font-medium">
-                  {w}
-                </div>
-              ))}
-            </div>
+      <div className="grid grid-cols-7 gap-1 text-xs text-muted-foreground">
+        {weekdays.map((w) => (
+          <div key={w} className="text-center text-[11px] font-medium">
+            {w}
+          </div>
+        ))}
+      </div>
 
-            <div className="mt-2 grid grid-cols-7 gap-1">
-              {weeks.flat().map((day) => {
+      <div className="mt-2 grid grid-cols-7 gap-1">
+        {weeks.flat().map((day) => {
           const key = formatDateKey(day)
           const events = eventsByDate[key] || []
           const inMonth = day.getMonth() === currentMonth.getMonth()
@@ -106,11 +103,11 @@ export default function DeadlineCalendar({ opportunities }: { opportunities: Opp
                 setSelectedDateKey(key)
                 setOpen(true)
               }}
-                      className={cn(
-                        'flex min-h-[56px] md:h-12 w-full flex-col items-start justify-start rounded-md p-2 text-left text-xs hover:bg-accent',
-                        !inMonth && 'text-muted-foreground',
-                        isToday && 'ring-1 ring-primary/40'
-                      )}
+              className={cn(
+                'flex h-12 w-full flex-col items-start justify-start rounded-md p-2 text-left text-xs hover:bg-accent',
+                !inMonth && 'text-muted-foreground',
+                isToday && 'ring-1 ring-primary/40'
+              )}
             >
               <div className="flex w-full items-start justify-between">
                 <span className="text-sm font-medium leading-none">{day.getDate()}</span>
@@ -127,10 +124,7 @@ export default function DeadlineCalendar({ opportunities }: { opportunities: Opp
               </div>
             </button>
           )
-              })}
-            </div>
-          </div>
-        </div>
+        })}
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
