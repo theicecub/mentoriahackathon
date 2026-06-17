@@ -23,6 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import Leaderboard from '@/components/leaderboard'
 import { Navbar } from '@/components/navbar'
 import { OpportunityCard } from '@/components/opportunity-card'
 import { CourseCard } from '@/components/course-card'
@@ -535,6 +536,8 @@ export default function DashboardPage() {
                 </Link>
               </CardContent>
             </Card>
+
+            <Leaderboard limit={5} />
           </div>
         </div>
       </main>
