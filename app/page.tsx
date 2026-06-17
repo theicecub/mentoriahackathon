@@ -197,7 +197,7 @@ export default function HomePage() {
             <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {steps.map(({ num, title, desc }) => (
                 <div key={num} className="flex flex-col gap-3">
-                  <span className="text-5xl font-bold text-primary/15 dark: text-white">{num}</span>
+                  <span className="text-5xl font-bold text-primary/15 dark:text-white">{num}</span>
                   <h3 className="text-lg font-semibold text-foreground">{title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
                 </div>
