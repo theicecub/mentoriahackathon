@@ -25,6 +25,7 @@ import { Separator } from '@/components/ui/separator'
 import { Navbar } from '@/components/navbar'
 import { courses, categoryColors, difficultyColors, type Lesson } from '@/lib/data'
 import { useApp } from '@/lib/store'
+import { useI18n } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 // ── Lesson type icon ───────────────────────────────────────────────────────────
@@ -53,6 +54,7 @@ function QuizSection({
   lesson: Lesson
   onComplete: () => void
 }) {
+  const { t } = useI18n()
   const [answers, setAnswers] = useState<number[]>(new Array(lesson.quiz?.length ?? 0).fill(-1))
   const [submitted, setSubmitted] = useState(false)
 
@@ -104,7 +106,9 @@ function QuizSection({
                   <span
                     className={cn(
                       'flex size-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold',
-                      isSelected && !submitted ? 'border-primary bg-primary text-primary-foreground' : 'border-current'
+                      isSelected && !submitted
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-current'
                     )}
                   >
                     {String.fromCharCode(65 + oi)}
@@ -126,15 +130,13 @@ function QuizSection({
           disabled={!allAnswered}
           className="w-full bg-primary text-primary-foreground"
         >
-          Проверить ответы
+          {t.courseDetail.submitAnswers}
         </Button>
       ) : (
         <div
           className={cn(
             'rounded-lg border p-4 text-center',
-            score === lesson.quiz.length
-              ? 'border-green-300 bg-green-50'
-              : 'border-amber-300 bg-amber-50'
+            score === lesson.quiz.length ? 'border-green-300 bg-green-50' : 'border-amber-300 bg-amber-50'
           )}
         >
           <p
@@ -144,16 +146,14 @@ function QuizSection({
             )}
           >
             {score === lesson.quiz.length
-              ? 'Отлично! Все ответы верны!'
-              : `Правильных: ${score} из ${lesson.quiz.length}`}
+              ? t.courseDetail.allCorrect
+              : `${t.courseDetail.correctOf} ${score} / ${lesson.quiz.length}`}
           </p>
           {score < lesson.quiz.length && (
-            <p className="mt-1 text-sm text-amber-600">
-              Повтори материал урока и попробуй снова.
-            </p>
+            <p className="mt-1 text-sm text-amber-600">{t.courseDetail.retryHint}</p>
           )}
           {score === lesson.quiz.length && (
-            <p className="mt-1 text-sm text-green-600">Урок засчитан. Переходи к следующему!</p>
+            <p className="mt-1 text-sm text-green-600">{t.courseDetail.lessonPassed}</p>
           )}
         </div>
       )}
@@ -168,12 +168,10 @@ export default function CourseDetailPage() {
   const router = useRouter()
   const { isLoggedIn, isCourseEnrolled, enrollCourse, getCourseProgress, updateCourseProgress } =
     useApp()
+  const { t } = useI18n()
 
   const courseId = params.id as string
-  const course = useMemo(
-    () => courses.find((c) => c.id === courseId),
-    [courseId]
-  )
+  const course = useMemo(() => courses.find((c) => c.id === courseId), [courseId])
 
   const enrolled = isCourseEnrolled(courseId)
   const progressData = getCourseProgress(courseId)
@@ -190,10 +188,10 @@ export default function CourseDetailPage() {
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
           <div className="text-center">
-            <p className="text-lg font-medium text-foreground">Курс не найден</p>
+            <p className="text-lg font-medium text-foreground">{t.courseDetail.notFound}</p>
             <Link href="/courses">
               <Button variant="outline" className="mt-4">
-                Вернуться к курсам
+                {t.courseDetail.backToCourses}
               </Button>
             </Link>
           </div>
@@ -219,10 +217,10 @@ export default function CourseDetailPage() {
   }
 
   const typeLabel: Record<Lesson['type'], string> = {
-    video: 'Видео',
-    quiz: 'Тест',
-    assignment: 'Задание',
-    reading: 'Чтение',
+    video: t.courseDetail.typeLabelVideo,
+    quiz: t.courseDetail.typeLabelQuiz,
+    assignment: t.courseDetail.typeLabelAssignment,
+    reading: t.courseDetail.typeLabelReading,
   }
 
   return (
@@ -237,7 +235,7 @@ export default function CourseDetailPage() {
             className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="size-4" />
-            Все курсы
+            {t.courseDetail.allCourses}
           </Link>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
@@ -259,7 +257,7 @@ export default function CourseDetailPage() {
                 </Badge>
                 {course.featured && (
                   <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">
-                    Популярный
+                    {t.courseDetail.popular}
                   </Badge>
                 )}
               </div>
@@ -272,7 +270,7 @@ export default function CourseDetailPage() {
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <BookOpen className="size-4" />
-                  {course.lessons.length} уроков
+                  {course.lessons.length} {t.courseDetail.lessonsCount}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="size-4" />
@@ -280,7 +278,7 @@ export default function CourseDetailPage() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Users className="size-4" />
-                  {course.grades.join(', ')} класс
+                  {course.grades.join(', ')} {t.courseDetail.gradeClass}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <GraduationCap className="size-4" />
@@ -315,12 +313,13 @@ export default function CourseDetailPage() {
                     <>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Прогресс</span>
+                          <span className="text-muted-foreground">{t.courseDetail.progress}</span>
                           <span className="font-semibold text-primary">{progressPct}%</span>
                         </div>
                         <Progress value={progressPct} className="h-2" />
                         <p className="text-xs text-muted-foreground">
-                          {completedLessons.length} из {course.lessons.length} уроков завершено
+                          {completedLessons.length} {t.courseDetail.lessonsDone}{' '}
+                          {course.lessons.length} {t.courseDetail.lessonsDoneSuffix}
                         </p>
                       </div>
                       <Button
@@ -331,20 +330,20 @@ export default function CourseDetailPage() {
                         }}
                       >
                         <Play className="size-4" data-icon="inline-start" />
-                        {progressPct > 0 ? 'Продолжить обучение' : 'Начать урок'}
+                        {progressPct > 0 ? t.courseDetail.continueStudy : t.courseDetail.startLesson}
                       </Button>
                     </>
                   ) : (
                     <>
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-foreground">Бесплатно</p>
-                        <p className="text-sm text-muted-foreground">Асинхронный формат</p>
+                        <p className="text-2xl font-bold text-foreground">{t.courseDetail.free}</p>
+                        <p className="text-sm text-muted-foreground">{t.courseDetail.asyncFormat}</p>
                       </div>
                       <Button
                         className="w-full bg-primary text-primary-foreground"
                         onClick={handleEnroll}
                       >
-                        Записаться на курс
+                        {t.courseDetail.enroll}
                       </Button>
                     </>
                   )}
@@ -363,7 +362,7 @@ export default function CourseDetailPage() {
             <Card className="border border-border">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base font-semibold">
-                  Программа курса
+                  {t.courseDetail.courseProgram}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
@@ -387,7 +386,6 @@ export default function CourseDetailPage() {
                           !accessible && 'cursor-not-allowed opacity-60'
                         )}
                       >
-                        {/* Status indicator */}
                         <div
                           className={cn(
                             'mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full text-xs',
@@ -432,16 +430,14 @@ export default function CourseDetailPage() {
             {!enrolled && (
               <div className="surface-card mt-4 rounded-lg border-dashed p-4 text-center">
                 <Lock className="mx-auto mb-2 size-6 text-muted-foreground/50" />
-                <p className="text-sm font-medium text-foreground">Запись открыта</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Запишитесь на курс, чтобы начать просматривать уроки
-                </p>
+                <p className="text-sm font-medium text-foreground">{t.courseDetail.enrollOpen}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{t.courseDetail.enrollOpenDesc}</p>
                 <Button
                   size="sm"
                   className="mt-3 w-full bg-primary text-primary-foreground"
                   onClick={handleEnroll}
                 >
-                  Записаться
+                  {t.courseDetail.enrollBtn}
                 </Button>
               </div>
             )}
@@ -489,13 +485,13 @@ export default function CourseDetailPage() {
                         onClick={() => markComplete(activeLesson.id)}
                       >
                         <CheckCircle className="size-4" data-icon="inline-start" />
-                        Отметить как завершённый
+                        {t.courseDetail.markComplete}
                       </Button>
                     )}
                     {isCompleted(activeLesson.id) && (
                       <div className="flex items-center gap-2 text-green-600">
                         <CheckCircle className="size-5" />
-                        <span className="font-medium">Урок завершён</span>
+                        <span className="font-medium">{t.courseDetail.lessonDone}</span>
                       </div>
                     )}
                   </div>
@@ -506,13 +502,13 @@ export default function CourseDetailPage() {
                   <div className="space-y-4">
                     <div className="rounded-lg border border-primary/20 bg-secondary/70 p-4">
                       <p className="text-sm font-medium text-primary">
-                        Ответьте на все вопросы, чтобы засчитать тест.
+                        {t.courseDetail.quizInstruction}
                       </p>
                     </div>
                     {isCompleted(activeLesson.id) ? (
                       <div className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 p-4 text-green-700">
                         <CheckCircle className="size-5" />
-                        <span className="font-medium">Тест пройден!</span>
+                        <span className="font-medium">{t.courseDetail.testPassed}</span>
                       </div>
                     ) : (
                       <QuizSection
@@ -529,7 +525,9 @@ export default function CourseDetailPage() {
                     <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
                       <div className="mb-3 flex items-center gap-2">
                         <PenLine className="size-5 text-amber-600" />
-                        <span className="font-semibold text-amber-800">Практическое задание</span>
+                        <span className="font-semibold text-amber-800">
+                          {t.courseDetail.practicalTask}
+                        </span>
                       </div>
                       <p className="text-sm leading-relaxed text-amber-700">
                         {activeLesson.description}
@@ -542,13 +540,13 @@ export default function CourseDetailPage() {
                         onClick={() => markComplete(activeLesson.id)}
                       >
                         <CheckCircle className="size-4" data-icon="inline-start" />
-                        Отметить задание как выполненное
+                        {t.courseDetail.markTaskDone}
                       </Button>
                     )}
                     {isCompleted(activeLesson.id) && (
                       <div className="flex items-center gap-2 text-green-600">
                         <CheckCircle className="size-5" />
-                        <span className="font-medium">Задание выполнено</span>
+                        <span className="font-medium">{t.courseDetail.taskDone}</span>
                       </div>
                     )}
                   </div>
@@ -570,20 +568,20 @@ export default function CourseDetailPage() {
                           onClick={() => prev && setActiveLessonId(prev.id)}
                         >
                           <ArrowLeft className="size-4" data-icon="inline-start" />
-                          Предыдущий
+                          {t.courseDetail.prevLesson}
                         </Button>
                         {next ? (
                           <Button
                             className="bg-primary text-primary-foreground"
                             onClick={() => setActiveLessonId(next.id)}
                           >
-                            Следующий урок
+                            {t.courseDetail.nextLesson}
                             <ChevronRight className="size-4" data-icon="inline-end" />
                           </Button>
                         ) : (
                           <div className="flex items-center gap-2 text-green-600 font-medium">
                             <CheckCircle className="size-5" />
-                            Курс завершён!
+                            {t.courseDetail.courseDone}
                           </div>
                         )}
                       </>
@@ -598,19 +596,19 @@ export default function CourseDetailPage() {
                   <BookOpen className="size-8 text-primary" />
                 </div>
                 <h2 className="text-lg font-bold text-foreground">
-                  {enrolled ? 'Выбери урок для начала' : 'Запишись на курс'}
+                  {enrolled ? t.courseDetail.chooseLesson : t.courseDetail.enrollFirst}
                 </h2>
                 <p className="mt-2 max-w-xs text-sm text-muted-foreground">
                   {enrolled
-                    ? 'Нажми на любой урок в списке слева, чтобы начать обучение.'
-                    : 'Запишись на курс бесплатно, чтобы получить доступ ко всем урокам.'}
+                    ? t.courseDetail.chooseLessonDesc
+                    : t.courseDetail.enrollFirstDesc}
                 </p>
                 {!enrolled && (
                   <Button
                     className="mt-6 bg-primary text-primary-foreground"
                     onClick={handleEnroll}
                   >
-                    Записаться бесплатно
+                    {t.courseDetail.enrollFree}
                   </Button>
                 )}
               </div>

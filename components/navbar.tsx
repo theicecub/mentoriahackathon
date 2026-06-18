@@ -111,14 +111,12 @@ export function Navbar() {
 
           {/* Language switcher */}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                className="flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
-                aria-label={t.nav.languageSwitcher}
-              >
-                <Globe className="size-4" />
-                <span>{currentLang.short}</span>
-              </button>
+            <DropdownMenuTrigger
+              className="flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground outline-none"
+              aria-label={t.nav.languageSwitcher}
+            >
+              <Globe className="size-4" />
+              <span>{currentLang.short}</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-36">
               {LANGUAGE_OPTIONS.map((opt) => (
@@ -147,15 +145,13 @@ export function Navbar() {
                 </Button>
               </Link>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-secondary/70">
-                    <Avatar className="size-7">
-                      <AvatarFallback className="text-xs bg-primary text-primary-foreground">
-                        {initials}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm font-medium text-foreground">{user?.name?.split(' ')[0]}</span>
-                  </button>
+                <DropdownMenuTrigger className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-secondary/70 outline-none">
+                  <Avatar className="size-7">
+                    <AvatarFallback className="text-xs bg-primary text-primary-foreground">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium text-foreground">{user?.name?.split(' ')[0]}</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem asChild>

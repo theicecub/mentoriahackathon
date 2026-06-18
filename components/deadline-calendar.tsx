@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 import type { Opportunity } from '@/lib/data'
 
 function formatDateKey(d: Date) {
@@ -13,6 +14,8 @@ function formatDateKey(d: Date) {
 }
 
 export default function DeadlineCalendar({ opportunities }: { opportunities: Opportunity[] }) {
+  const { t, language } = useI18n()
+
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date()
     return new Date(now.getFullYear(), now.getMonth(), 1)
@@ -32,7 +35,11 @@ export default function DeadlineCalendar({ opportunities }: { opportunities: Opp
     return map
   }, [opportunities])
 
-  const monthLabel = currentMonth.toLocaleString('ru-RU', { month: 'long', year: 'numeric' })
+  // Map language to locale for month display
+  const localeMap: Record<string, string> = { ru: 'ru-RU', kz: 'kk-KZ', en: 'en-US' }
+  const locale = localeMap[language] ?? 'ru-RU'
+
+  const monthLabel = currentMonth.toLocaleString(locale, { month: 'long', year: 'numeric' })
 
   function prevMonth() {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))
@@ -45,7 +52,7 @@ export default function DeadlineCalendar({ opportunities }: { opportunities: Opp
   // build calendar grid (6 weeks)
   const weeks = useMemo(() => {
     const first = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
-    const weekday = (first.getDay() + 6) % 7 // make Monday=0
+    const weekday = (first.getDay() + 6) % 7 // Monday = 0
     const start = new Date(first)
     start.setDate(first.getDate() - weekday)
 
@@ -63,8 +70,7 @@ export default function DeadlineCalendar({ opportunities }: { opportunities: Opp
     return rows
   }, [currentMonth])
 
-  const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
-
+  const weekdays = t.calendar.weekdays
   const selectedEvents = selectedDateKey ? eventsByDate[selectedDateKey] || [] : []
 
   return (
@@ -129,24 +135,33 @@ export default function DeadlineCalendar({ opportunities }: { opportunities: Opp
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent showCloseButton>
-          <DialogTitle>Дедлайны на {selectedDateKey}</DialogTitle>
+          <DialogTitle>
+            {t.calendar.dialogTitle} {selectedDateKey}
+          </DialogTitle>
           <DialogDescription>
             {selectedEvents.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Нет дедлайнов</p>
+              <p className="text-sm text-muted-foreground">{t.calendar.noDeadlines}</p>
             ) : (
               <ul className="flex flex-col gap-2">
                 {selectedEvents.map((e) => {
-                  const daysLeft = Math.ceil((new Date(e.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+                  const daysLeft = Math.ceil(
+                    (new Date(e.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+                  )
                   return (
                     <li key={e.id} className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <Link href={`/opportunities/${e.id}`} className="text-sm font-medium text-foreground">
+                        <Link
+                          href={`/opportunities/${e.id}`}
+                          className="text-sm font-medium text-foreground"
+                        >
                           {e.title}
                         </Link>
                         <div className="text-xs text-muted-foreground">{e.organization}</div>
                       </div>
                       <div className="text-right text-xs text-muted-foreground">
-                        {daysLeft > 0 ? `${daysLeft} дн.` : 'Дедлайн прошёл'}
+                        {daysLeft > 0
+                          ? `${daysLeft} ${t.calendar.daysLeft}`
+                          : t.calendar.expired}
                       </div>
                     </li>
                   )

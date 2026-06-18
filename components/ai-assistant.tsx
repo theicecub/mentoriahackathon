@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useApp } from '@/lib/store'
+import { useI18n } from '@/lib/i18n'
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -25,19 +26,11 @@ function getMessageText(msg: UIMessage): string {
     .join('')
 }
 
-// ─── Suggestion chips ────────────────────────────────────────────────────────
-
-const SUGGESTIONS = [
-  'Что мне подходит по интересам?',
-  'Как подготовиться к IELTS?',
-  'Какие стипендии есть для 11 класса?',
-  'Посоветуй курс по программированию',
-]
-
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export function AIAssistant() {
   const { user, isLoggedIn } = useApp()
+  const { t } = useI18n()
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -54,12 +47,10 @@ export function AIAssistant() {
 
   const isLoading = status === 'streaming' || status === 'submitted'
 
-  // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Auto-focus input when opened
   useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 100)
@@ -84,6 +75,8 @@ export function AIAssistant() {
     }
   }
 
+  const suggestions = t.aiAssistant.suggestions
+
   return (
     <>
       {/* ── Floating chat panel ─────────────────────────────────────────── */}
@@ -97,29 +90,34 @@ export function AIAssistant() {
         style={{ width: 'min(calc(100vw - 32px), 400px)' }}
         aria-hidden={!open}
       >
-        <div className="ai-panel flex flex-col overflow-hidden rounded-2xl border border-[--ai-border] shadow-2xl"
-          style={{ height: 'min(520px, calc(100dvh - 140px))' }}>
-
+        <div
+          className="ai-panel flex flex-col overflow-hidden rounded-2xl border border-[--ai-border] shadow-2xl"
+          style={{ height: 'min(520px, calc(100dvh - 140px))' }}
+        >
           {/* Header */}
           <div className="ai-header flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2.5 text-white">
-  <div className="ai-avatar flex size-8 items-center justify-center rounded-full">
-    <Sparkles className="size-4" />
-  </div>
-  <div>
-    <p className="text-sm font-semibold leading-none ai-header-title !text-white">Mentoria AI-Bot</p>
-    <p className="mt-0.5 text-xs ai-header-sub !text-white">
-      {isLoggedIn ? `Привет, ${user?.name?.split(' ')[0]}` : 'Ассистент'}
-    </p>
-  </div>
-</div>
+              <div className="ai-avatar flex size-8 items-center justify-center rounded-full">
+                <Sparkles className="size-4" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold leading-none ai-header-title !text-white">
+                  Mentoria AI-Bot
+                </p>
+                <p className="mt-0.5 text-xs ai-header-sub !text-white">
+                  {isLoggedIn
+                    ? `${t.aiAssistant.greeting} ${user?.name?.split(' ')[0]}`
+                    : t.aiAssistant.assistant}
+                </p>
+              </div>
+            </div>
             <button
-  onClick={() => setOpen(false)}
-  className="ai-close flex size-7 items-center justify-center rounded-full transition-colors !text-white hover:!text-black"
-  aria-label="Закрыть"
->
-  <X className="size-4" />
-</button>
+              onClick={() => setOpen(false)}
+              className="ai-close flex size-7 items-center justify-center rounded-full transition-colors !text-white hover:!text-black"
+              aria-label={t.aiAssistant.close}
+            >
+              <X className="size-4" />
+            </button>
           </div>
 
           {/* Messages */}
@@ -130,14 +128,14 @@ export function AIAssistant() {
                   <Bot className="size-7" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm ai-welcome-title">Привет! Я Mentoria AI</p>
+                  <p className="font-semibold text-sm ai-welcome-title">{t.aiAssistant.welcome}</p>
                   <p className="mt-1 text-xs leading-relaxed ai-welcome-sub">
-                    Расскажу о возможностях, которые подходят именно тебе — по интересам, классу и целям.
+                    {t.aiAssistant.welcomeDesc}
                   </p>
                 </div>
                 {/* Suggestions */}
                 <div className="flex flex-wrap gap-2 justify-center mt-1">
-                  {SUGGESTIONS.map((s) => (
+                  {suggestions.map((s) => (
                     <button
                       key={s}
                       onClick={() => handleSuggestion(s)}
@@ -206,7 +204,7 @@ export function AIAssistant() {
           {/* Quick suggestions after conversation starts */}
           {messages.length > 0 && !isLoading && (
             <div className="ai-suggestions-row flex gap-2 overflow-x-auto px-4 pb-2 pt-1 scrollbar-none">
-              {SUGGESTIONS.slice(0, 3).map((s) => (
+              {suggestions.slice(0, 3).map((s) => (
                 <button
                   key={s}
                   onClick={() => handleSuggestion(s)}
@@ -226,7 +224,7 @@ export function AIAssistant() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Спроси о возможностях..."
+              placeholder={t.aiAssistant.inputPlaceholder}
               rows={1}
               className="ai-textarea flex-1 resize-none rounded-xl px-3 py-2.5 text-sm outline-none transition-all"
               style={{ maxHeight: '96px' }}
@@ -236,7 +234,7 @@ export function AIAssistant() {
               onClick={handleSend}
               disabled={!input.trim() || isLoading}
               className="ai-send-btn flex size-9 shrink-0 items-center justify-center rounded-xl transition-all disabled:opacity-40"
-              aria-label="Отправить"
+              aria-label={t.aiAssistant.sendAria}
             >
               {isLoading ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -250,20 +248,20 @@ export function AIAssistant() {
 
       {/* ── FAB toggle button ───────────────────────────────────────────── */}
       <button
-  onClick={() => setOpen((v) => !v)}
-  className={cn(
-    'fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full px-4 py-3 shadow-lg transition-all duration-300 sm:bottom-6 sm:right-6',
-    'ai-fab',
-    open && 'ai-fab-open'
-  )}
-  aria-label={open ? 'Закрыть ассистента' : 'Открыть AI-ассистента'}
->
-  <Sparkles className="size-5" />
-  {!open && (
-    <span className="text-sm font-semibold pr-1">AI-помощник</span>
-  )}
-  {open && <ChevronDown className="size-4" />}
-</button>
+        onClick={() => setOpen((v) => !v)}
+        className={cn(
+          'fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full px-4 py-3 shadow-lg transition-all duration-300 sm:bottom-6 sm:right-6',
+          'ai-fab',
+          open && 'ai-fab-open'
+        )}
+        aria-label={open ? t.aiAssistant.closeAria : t.aiAssistant.openAria}
+      >
+        <Sparkles className="size-5" />
+        {!open && (
+          <span className="text-sm font-semibold pr-1">{t.aiAssistant.fabLabel}</span>
+        )}
+        {open && <ChevronDown className="size-4" />}
+      </button>
     </>
   )
 }
@@ -278,7 +276,6 @@ function MessageContent({ text }: { text: string }) {
       {lines.map((line, i) => {
         if (!line.trim()) return <div key={i} className="h-1" />
 
-        // Bold text: **text**
         const parts = line.split(/(\*\*[^*]+\*\*)/)
         const rendered = parts.map((part, j) => {
           if (part.startsWith('**') && part.endsWith('**')) {
@@ -287,7 +284,6 @@ function MessageContent({ text }: { text: string }) {
           return <span key={j}>{part}</span>
         })
 
-        // Bullet list
         if (line.match(/^[\-•]\s/)) {
           return (
             <div key={i} className="flex gap-1.5">
@@ -297,7 +293,6 @@ function MessageContent({ text }: { text: string }) {
           )
         }
 
-        // Numbered list
         if (line.match(/^\d+\.\s/)) {
           return (
             <div key={i} className="flex gap-1.5">
