@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { I18nProvider, type Language } from './i18n'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -32,12 +33,15 @@ export interface AppState {
   adminCourses: import('./data').Course[]
   // Theme
   theme: 'dark' | 'light'
+  // Language
+  language: Language
 }
 
 interface AppContextValue extends AppState {
   login: (profile: UserProfile) => void
   logout: () => void
   toggleTheme: () => void
+  setLanguage: (lang: Language) => void
   completeOnboarding: (profile: UserProfile) => void
   saveOpportunity: (id: string) => void
   unsaveOpportunity: (id: string) => void
@@ -69,6 +73,7 @@ const defaultState: AppState = {
   adminOpportunities: [],
   adminCourses: [],
   theme: 'dark',
+  language: 'ru',
 }
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
@@ -110,6 +115,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const toggleTheme = useCallback(() => {
     setState((s) => ({ ...s, theme: s.theme === 'dark' ? 'light' : 'dark' }))
+  }, [])
+
+  const setLanguage = useCallback((lang: Language) => {
+    setState((s) => ({ ...s, language: lang }))
   }, [])
 
   const login = useCallback((profile: UserProfile) => {
@@ -239,6 +248,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         login,
         logout,
         toggleTheme,
+        setLanguage,
         completeOnboarding,
         saveOpportunity,
         unsaveOpportunity,
@@ -255,7 +265,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         deleteCourse,
       }}
     >
-      {children}
+      <I18nProvider language={state.language}>
+        {children}
+      </I18nProvider>
     </AppContext.Provider>
   )
 }

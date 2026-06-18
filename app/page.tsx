@@ -11,8 +11,6 @@ import {
   Lightbulb,
   Users,
   CheckCircle,
-  Zap,
-  Globe,
   Target,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -22,102 +20,22 @@ import { OpportunityCard } from '@/components/opportunity-card'
 import { CourseCard } from '@/components/course-card'
 import { opportunities, courses } from '@/lib/data'
 import { useApp } from '@/lib/store'
+import { useI18n } from '@/lib/i18n'
 
-
-const features = [
-  {
-    icon: Compass,
-    title: 'Каталог возможностей',
-    description:
-      'Более 200 олимпиад, стипендий, летних программ и конкурсов в одном месте. Фильтруй по классу, теме и дедлайну.',
-    color: 'bg-blue-100 text-blue-700',
-  },
-  {
-    icon: BookOpen,
-    title: 'Асинхронные курсы',
-    description:
-      'Учись в своём темпе. Каждый курс включает видеоуроки, тесты и задания. Прогресс сохраняется автоматически.',
-    color: 'bg-amber-100 text-amber-700',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Персональные рекомендации',
-    description:
-      'Платформа изучает твои интересы и цели, затем подбирает курсы и возможности, которые подходят именно тебе.',
-    color: 'bg-green-100 text-green-700',
-  },
-  {
-    icon: LineChart,
-    title: 'Отслеживание прогресса',
-    description:
-      'Личный кабинет с дедлайнами, прогресс-барами по курсам и сохранёнными возможностями всегда под рукой.',
-    color: 'bg-purple-100 text-purple-700',
-  },
-  {
-    icon: Award,
-    title: 'Реальные достижения',
-    description:
-      'Участвуй в конкурсах и программах, которые ценят лучшие университеты мира. Строй своё портфолио.',
-    color: 'bg-rose-100 text-rose-700',
-  },
-  {
-    icon: Target,
-    title: 'Цели и дедлайны',
-    description:
-      'Устанавливай цели, получай напоминания о дедлайнах и отслеживай свой путь к мечте.',
-    color: 'bg-teal-100 text-teal-700',
-  },
-]
-
-const steps = [
-  {
-    num: '01',
-    title: 'Создай профиль',
-    desc: 'Расскажи о своём классе, интересах и целях. Займёт 2 минуты.',
-  },
-  {
-    num: '02',
-    title: 'Получи рекомендации',
-    desc: 'Платформа сразу подберёт подходящие курсы и возможности.',
-  },
-  {
-    num: '03',
-    title: 'Сохраняй и учись',
-    desc: 'Сохраняй возможности, записывайся на курсы и отслеживай прогресс.',
-  },
-  {
-    num: '04',
-    title: 'Достигай целей',
-    desc: 'Подавай заявки, получай сертификаты и стройте блестящее будущее.',
-  },
-]
-
-const testimonials = [
-  {
-    name: 'Айгерим Б.',
-    grade: '11 класс, Алматы',
-    text: 'Через Mentoria Hub нашла стипендию Diamond Challenge и прошла в финал. Платформа подобрала её за 5 минут!',
-    avatar: 'А',
-    tag: 'Diamond Challenge Finalist',
-  },
-  {
-    name: 'Тимур К.',
-    grade: '10 класс, Астана',
-    text: 'Курс по Python помог мне выиграть школьную олимпиаду по информатике. Объясняется очень понятно.',
-    avatar: 'Т',
-    tag: 'Олимпиада по информатике',
-  },
-  {
-    name: 'Зарина М.',
-    grade: '9 класс, Шымкент',
-    text: 'За месяц прошла курс по английскому и сдала IELTS на 6.5. Рекомендую всем, кто готовится к экзаменам.',
-    avatar: 'З',
-    tag: 'IELTS 6.5',
-  },
+const featureIcons = [Compass, BookOpen, Lightbulb, LineChart, Award, Target]
+const featureColors = [
+  'bg-blue-100 text-blue-700',
+  'bg-amber-100 text-amber-700',
+  'bg-green-100 text-green-700',
+  'bg-purple-100 text-purple-700',
+  'bg-rose-100 text-rose-700',
+  'bg-teal-100 text-teal-700',
 ]
 
 export default function HomePage() {
   const { isLoggedIn } = useApp()
+  const { t } = useI18n()
+
   const featuredOpportunities = opportunities.filter((o) => o.featured).slice(0, 3)
   const featuredCourses = courses.filter((c) => c.featured).slice(0, 3)
 
@@ -130,30 +48,28 @@ export default function HomePage() {
         <section className="relative overflow-hidden border-b border-border/70">
           <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
             <div className="mx-auto max-w-3xl text-center">
-
               <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-                Возможности и курсы —
+                {t.home.heroTitle}
                 <br />
-                <span className="text-primary">всё на одной платформе</span>
+                <span className="text-primary">{t.home.heroTitleAccent}</span>
               </h1>
 
               <p className="mt-6 text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                Mentoria Hub помогает ученикам находить олимпиады, стипендии и летние программы, а
-                также проходить качественные асинхронные курсы — в своём темпе, без давления.
+                {t.home.heroDesc}
               </p>
 
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link href={isLoggedIn ? '/opportunities' : '/onboarding'}>
                   <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8">
                     <Compass className="size-4" data-icon="inline-start" />
-                    Найти возможности
+                    {t.home.heroCta}
                     <ArrowRight className="size-4" data-icon="inline-end" />
                   </Button>
                 </Link>
                 <Link href="/courses">
                   <Button size="lg" variant="outline" className="px-8">
                     <BookOpen className="size-4" data-icon="inline-start" />
-                    Начать обучение
+                    {t.home.heroCtaCourses}
                   </Button>
                 </Link>
               </div>
@@ -161,28 +77,29 @@ export default function HomePage() {
           </div>
         </section>
 
-
         {/* ── Features ──────────────────────────────────────────── */}
         <section className="py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center">
               <h2 className="text-balance text-3xl font-bold text-foreground sm:text-4xl">
-                Всё, что нужно для роста
+                {t.home.featuresTitle}
               </h2>
-              <p className="mt-3 text-muted-foreground">
-                Mentoria Hub — это не просто сайт. Это твой личный навигатор по образовательным возможностям.
-              </p>
+              <p className="mt-3 text-muted-foreground">{t.home.featuresDesc}</p>
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {features.map(({ icon: Icon, title, description, color }) => (
-                <div key={title} className="surface-card rounded-lg p-6 transition-all hover:-translate-y-0.5">
-                  <div className={`mb-4 flex size-11 items-center justify-center rounded-md ${color}`}>
-                    <Icon className="size-5" />
+              {t.features.map((feature, idx) => {
+                const Icon = featureIcons[idx]
+                const color = featureColors[idx]
+                return (
+                  <div key={feature.title} className="surface-card rounded-lg p-6 transition-all hover:-translate-y-0.5">
+                    <div className={`mb-4 flex size-11 items-center justify-center rounded-md ${color}`}>
+                      <Icon className="size-5" />
+                    </div>
+                    <h3 className="mb-2 font-semibold text-foreground">{feature.title}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{feature.description}</p>
                   </div>
-                  <h3 className="mb-2 font-semibold text-foreground">{title}</h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
@@ -191,13 +108,15 @@ export default function HomePage() {
         <section className="section-muted py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center">
-              <h2 className="text-balance text-3xl font-bold text-foreground sm:text-4xl">Как это работает</h2>
-              <p className="mt-3 text-muted-foreground">Начни за 5 минут, учись всю жизнь</p>
+              <h2 className="text-balance text-3xl font-bold text-foreground sm:text-4xl">{t.home.howTitle}</h2>
+              <p className="mt-3 text-muted-foreground">{t.home.howDesc}</p>
             </div>
             <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {steps.map(({ num, title, desc }) => (
-                <div key={num} className="flex flex-col gap-3">
-                  <span className="text-5xl font-bold text-primary/15">{num}</span>
+              {t.steps.map(({ title, desc }, idx) => (
+                <div key={title} className="flex flex-col gap-3">
+                  <span className="text-5xl font-bold text-primary/15">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
                   <h3 className="text-lg font-semibold text-foreground">{title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
                 </div>
@@ -205,7 +124,8 @@ export default function HomePage() {
             </div>
             <div className="mt-10 text-center">
               <Link href="/onboarding">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-10">Присоединиться к Mentoria
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-10">
+                  {t.home.howJoin}
                   <ArrowRight className="size-4" data-icon="inline-end" />
                 </Button>
               </Link>
@@ -218,12 +138,12 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Актуальные возможности</h2>
-                <p className="mt-1 text-muted-foreground">Конкурсы и программы с ближайшими дедлайнами</p>
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{t.home.featuredOpsTitle}</h2>
+                <p className="mt-1 text-muted-foreground">{t.home.featuredOpsDesc}</p>
               </div>
               <Link href="/opportunities" className="hidden sm:block">
                 <Button variant="ghost" className="gap-1.5">
-                  Все возможности <ArrowRight className="size-4" />
+                  {t.home.featuredOpsAll} <ArrowRight className="size-4" />
                 </Button>
               </Link>
             </div>
@@ -234,7 +154,7 @@ export default function HomePage() {
             </div>
             <div className="mt-6 text-center sm:hidden">
               <Link href="/opportunities">
-                <Button variant="outline">Смотреть все возможности</Button>
+                <Button variant="outline">{t.home.featuredOpsMobileAll}</Button>
               </Link>
             </div>
           </div>
@@ -245,12 +165,12 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Популярные курсы Mentoria</h2>
-                <p className="mt-1 text-muted-foreground">Асинхронные курсы, разработанные нашими педагогами</p>
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{t.home.featuredCoursesTitle}</h2>
+                <p className="mt-1 text-muted-foreground">{t.home.featuredCoursesDesc}</p>
               </div>
               <Link href="/courses" className="hidden sm:block">
                 <Button variant="ghost" className="gap-1.5">
-                  Все курсы <ArrowRight className="size-4" />
+                  {t.home.featuredCoursesAll} <ArrowRight className="size-4" />
                 </Button>
               </Link>
             </div>
@@ -261,7 +181,7 @@ export default function HomePage() {
             </div>
             <div className="mt-6 text-center sm:hidden">
               <Link href="/courses">
-                <Button variant="outline">Смотреть все курсы</Button>
+                <Button variant="outline">{t.home.featuredCoursesMobileAll}</Button>
               </Link>
             </div>
           </div>
@@ -271,11 +191,11 @@ export default function HomePage() {
         <section className="py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-foreground">Что говорят ученики</h2>
-              <p className="mt-2 text-muted-foreground">Реальные истории успеха с Mentoria Hub</p>
+              <h2 className="text-3xl font-bold text-foreground">{t.home.testimonialsTitle}</h2>
+              <p className="mt-2 text-muted-foreground">{t.home.testimonialsDesc}</p>
             </div>
             <div className="mt-10 grid gap-6 sm:grid-cols-3">
-              {testimonials.map(({ name, grade, text, avatar, tag }) => (
+              {t.testimonials.map(({ name, grade, text, avatar, tag }) => (
                 <div key={name} className="surface-card rounded-lg p-6">
                   <div className="mb-4 flex items-center gap-3">
                     <div className="flex size-10 items-center justify-center rounded-md border border-primary/15 bg-secondary text-sm font-bold text-primary">
@@ -301,21 +221,21 @@ export default function HomePage() {
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
             <GraduationCap className="mx-auto size-12 text-primary-foreground/60 mb-4 dark:text-white" />
             <h2 className="text-balance text-3xl font-bold text-primary-foreground dark:text-card-foreground sm:text-4xl">
-              Готов начать свой путь?
+              {t.home.ctaTitle}
             </h2>
             <p className="mt-4 text-lg text-primary-foreground/70 dark:text-card-foreground/70">
-              Присоединись к тысячам учеников, которые уже используют Mentoria Hub для достижения своих образовательных целей.
+              {t.home.ctaDesc}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link href="/onboarding">
+              <Link href="/onboarding">
                 <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 dark:bg-primary dark:text-primary-foreground px-8">
-                  Создать профиль <ArrowRight className="size-4" data-icon="inline-end" />
+                  {t.home.ctaCreate} <ArrowRight className="size-4" data-icon="inline-end" />
                 </Button>
               </Link>
               <Link href="/courses">
                 <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground dark:border-primary/30 dark:text-card-foreground dark:hover:bg-primary/10 px-8">
-  Смотреть курсы
-</Button>
+                  {t.home.ctaCourses}
+                </Button>
               </Link>
             </div>
           </div>
@@ -332,12 +252,12 @@ export default function HomePage() {
               <span className="font-bold text-foreground">Mentoria<span className="text-primary"> Hub</span></span>
             </div>
             <nav className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-              <Link href="/opportunities" className="hover:text-foreground transition-colors">Возможности</Link>
-              <Link href="/courses" className="hover:text-foreground transition-colors">Курсы</Link>
-              <Link href="/dashboard" className="hover:text-foreground transition-colors">Кабинет</Link>
-              <Link href="/admin" className="hover:text-foreground transition-colors">Для администраторов</Link>
+              <Link href="/opportunities" className="hover:text-foreground transition-colors">{t.home.footerOpportunities}</Link>
+              <Link href="/courses" className="hover:text-foreground transition-colors">{t.home.footerCourses}</Link>
+              <Link href="/dashboard" className="hover:text-foreground transition-colors">{t.home.footerDashboard}</Link>
+              <Link href="/admin" className="hover:text-foreground transition-colors">{t.home.footerAdmin}</Link>
             </nav>
-            <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Mentoria Hub</p>
+            <p className="text-xs text-muted-foreground">{'© '}{new Date().getFullYear()} Mentoria Hub</p>
           </div>
         </div>
       </footer>
