@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+import { useI18n } from '@/lib/i18n'
 
 type Row = {
   id: string
@@ -16,6 +15,7 @@ type Row = {
 export default function Leaderboard({ limit = 5 }: { limit?: number }) {
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
+  const { t } = useI18n()
 
   useEffect(() => {
     let cancelled = false
@@ -37,13 +37,13 @@ export default function Leaderboard({ limit = 5 }: { limit?: number }) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">Лидерборд</CardTitle>
+        <CardTitle className="text-base">{t.leaderboard.title}</CardTitle>
       </CardHeader>
       <CardContent className="pt-0">
         {loading ? (
-          <p className="text-sm text-muted-foreground">Загрузка…</p>
+          <p className="text-sm text-muted-foreground">{t.leaderboard.loading}</p>
         ) : rows.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Нет данных</p>
+          <p className="text-sm text-muted-foreground">{t.leaderboard.noData}</p>
         ) : (
           <ol className="flex flex-col gap-3">
             {rows.map((r, i) => (
@@ -51,7 +51,7 @@ export default function Leaderboard({ limit = 5 }: { limit?: number }) {
                 <div className="flex items-center gap-3">
                   <div className="flex items-center">
                     <Avatar>
-                      <AvatarFallback>{r.name.split(' ').map((p)=>p[0]).join('').slice(0,2)}</AvatarFallback>
+                      <AvatarFallback>{r.name.split(' ').map((p) => p[0]).join('').slice(0, 2)}</AvatarFallback>
                     </Avatar>
                   </div>
                   <div>

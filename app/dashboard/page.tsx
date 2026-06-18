@@ -37,6 +37,7 @@ import {
   difficultyColors,
 } from '@/lib/data'
 import { useApp } from '@/lib/store'
+import { useI18n } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 export default function DashboardPage() {
@@ -49,6 +50,7 @@ export default function DashboardPage() {
     adminOpportunities,
     adminCourses,
   } = useApp()
+  const { t } = useI18n()
 
   // Redirect if not logged in
   if (!isLoggedIn || !user) {
@@ -60,13 +62,11 @@ export default function DashboardPage() {
             <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-primary/10">
               <GraduationCap className="size-8 text-primary" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">Войдите в аккаунт</h1>
-            <p className="mt-2 text-muted-foreground">
-              Чтобы попасть в личный кабинет, нужно создать профиль на Mentoria Hub.
-            </p>
+            <h1 className="text-xl font-bold text-foreground">{t.dashboard.notLoggedInTitle}</h1>
+            <p className="mt-2 text-muted-foreground">{t.dashboard.notLoggedInDesc}</p>
             <Link href="/onboarding">
               <Button className="mt-5 bg-primary text-primary-foreground">
-                Создать профиль
+                {t.dashboard.createProfile}
               </Button>
             </Link>
           </div>
@@ -120,7 +120,6 @@ export default function DashboardPage() {
     .filter((c) => !enrolledCourses.find((e) => e.courseId === c.id))
     .slice(0, 3)
 
-  // Upcoming deadlines from saved opps
   const upcomingDeadlines = savedOps
     .filter((op) => {
       const days = Math.ceil(
@@ -156,10 +155,10 @@ export default function DashboardPage() {
             </Avatar>
             <div>
               <h1 className="text-xl font-bold text-foreground sm:text-2xl">
-                Привет, {user.name.split(' ')[0]}!
+                {t.dashboard.greeting} {user.name.split(' ')[0]}!
               </h1>
               <p className="text-sm text-muted-foreground">
-                {user.grade} класс · {user.interests.slice(0, 3).join(', ')}
+                {user.grade} · {user.interests.slice(0, 3).join(', ')}
               </p>
             </div>
           </div>
@@ -167,13 +166,13 @@ export default function DashboardPage() {
             <Link href="/opportunities">
               <Button variant="outline" size="sm" className="gap-1.5">
                 <Compass className="size-4" data-icon="inline-start" />
-                Возможности
+                {t.nav.opportunities}
               </Button>
             </Link>
             <Link href="/courses">
               <Button size="sm" className="bg-primary text-primary-foreground gap-1.5">
                 <BookOpen className="size-4" data-icon="inline-start" />
-                Курсы
+                {t.nav.courses}
               </Button>
             </Link>
           </div>
@@ -185,11 +184,11 @@ export default function DashboardPage() {
             <Sparkles className="size-4 text-primary" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-foreground">
-              Mentoria AI знает, что тебе подойдёт
-            </p>
+            <p className="text-sm font-semibold text-foreground">{t.dashboard.aiCallout}</p>
             <p className="text-xs text-muted-foreground">
-              Нажми на кнопку <span className="font-medium text-primary">AI-помощник</span> внизу справа, чтобы получить персональные рекомендации
+              {t.dashboard.aiCalloutDesc}{' '}
+              <span className="font-medium text-primary">{t.dashboard.aiButtonLabel}</span>{' '}
+              {t.dashboard.aiCalloutDescEnd}
             </p>
           </div>
         </div>
@@ -198,25 +197,25 @@ export default function DashboardPage() {
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
             {
-              label: 'Сохранено',
+              label: t.dashboard.statSaved,
               value: savedOpportunities.length,
               icon: Bookmark,
               color: 'bg-blue-500/15 text-blue-400 dark:bg-blue-500/20 dark:text-blue-300',
             },
             {
-              label: 'Курсов начато',
+              label: t.dashboard.statStarted,
               value: inProgressCount,
               icon: Play,
               color: 'bg-amber-500/15 text-amber-500 dark:bg-amber-500/20 dark:text-amber-300',
             },
             {
-              label: 'Курсов завершено',
+              label: t.dashboard.statCompleted,
               value: completedCount,
               icon: CheckCircle,
               color: 'bg-emerald-500/15 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300',
             },
             {
-              label: 'Дедлайнов скоро',
+              label: t.dashboard.statDeadlines,
               value: upcomingDeadlines.length,
               icon: Calendar,
               color: 'bg-rose-500/15 text-rose-500 dark:bg-rose-500/20 dark:text-rose-300',
@@ -244,11 +243,11 @@ export default function DashboardPage() {
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="flex items-center gap-2 text-lg font-bold text-foreground">
                   <TrendingUp className="size-5 text-primary" />
-                  Мои курсы
+                  {t.dashboard.myCourses}
                 </h2>
                 <Link href="/courses">
                   <Button variant="ghost" size="sm" className="gap-1 text-xs">
-                    Все курсы <ArrowRight className="size-3.5" />
+                    {t.dashboard.allCourses} <ArrowRight className="size-3.5" />
                   </Button>
                 </Link>
               </div>
@@ -256,13 +255,11 @@ export default function DashboardPage() {
               {enrolled.length === 0 ? (
                 <div className="surface-card flex flex-col items-center justify-center rounded-lg border-dashed py-10 text-center">
                   <BookOpen className="mb-3 size-8 text-muted-foreground/40" />
-                  <p className="text-sm font-medium text-foreground">Ты ещё не записан на курсы</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Запишись на курс и отслеживай прогресс здесь
-                  </p>
+                  <p className="text-sm font-medium text-foreground">{t.dashboard.notEnrolled}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{t.dashboard.notEnrolledDesc}</p>
                   <Link href="/courses">
                     <Button size="sm" variant="outline" className="mt-3">
-                      Найти курс
+                      {t.dashboard.findCourse}
                     </Button>
                   </Link>
                 </div>
@@ -291,14 +288,16 @@ export default function DashboardPage() {
                           <div className="mb-1.5 flex items-center gap-2 text-xs text-muted-foreground">
                             <span>{course.instructor}</span>
                             <span>·</span>
-                            <span>{course.lessons.length} уроков</span>
+                            <span>{course.lessons.length} {t.dashboard.lessons}</span>
                           </div>
                           <Progress value={pct} className="h-1.5" />
                           <p className="mt-1 text-xs text-muted-foreground">
                             {pct === 100 ? (
-                              <span className="text-emerald-500 dark:text-emerald-400 font-medium">Завершён</span>
+                              <span className="text-emerald-500 dark:text-emerald-400 font-medium">
+                                {t.dashboard.completed}
+                              </span>
                             ) : (
-                              `${pct}% завершено`
+                              `${pct}% ${t.dashboard.completedPct}`
                             )}
                           </p>
                         </div>
@@ -308,14 +307,14 @@ export default function DashboardPage() {
                             className="shrink-0 bg-primary text-primary-foreground"
                           >
                             {pct === 100 ? (
-                              'Повторить'
+                              t.dashboard.repeat
                             ) : pct > 0 ? (
                               <>
                                 <Play className="size-3.5" data-icon="inline-start" />
-                                Продолжить
+                                {t.dashboard.continueBtn}
                               </>
                             ) : (
-                              'Начать'
+                              t.dashboard.startBtn
                             )}
                           </Button>
                         </Link>
@@ -331,11 +330,11 @@ export default function DashboardPage() {
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="flex items-center gap-2 text-lg font-bold text-foreground">
                   <Bookmark className="size-5 text-primary" />
-                  Сохранённые возможности
+                  {t.dashboard.savedOps}
                 </h2>
                 <Link href="/opportunities">
                   <Button variant="ghost" size="sm" className="gap-1 text-xs">
-                    Каталог <ArrowRight className="size-3.5" />
+                    {t.dashboard.catalog} <ArrowRight className="size-3.5" />
                   </Button>
                 </Link>
               </div>
@@ -343,13 +342,11 @@ export default function DashboardPage() {
               {savedOps.length === 0 ? (
                 <div className="surface-card flex flex-col items-center justify-center rounded-lg border-dashed py-10 text-center">
                   <Bookmark className="mb-3 size-8 text-muted-foreground/40" />
-                  <p className="text-sm font-medium text-foreground">Нет сохранённых возможностей</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Сохраняй интересные возможности, нажимая на закладку
-                  </p>
+                  <p className="text-sm font-medium text-foreground">{t.dashboard.noSavedOps}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{t.dashboard.noSavedOpsDesc}</p>
                   <Link href="/opportunities">
                     <Button size="sm" variant="outline" className="mt-3">
-                      Найти возможности
+                      {t.dashboard.findOpportunities}
                     </Button>
                   </Link>
                 </div>
@@ -362,7 +359,7 @@ export default function DashboardPage() {
                     <div className="surface-card flex items-center justify-center rounded-lg border-dashed p-4 sm:col-span-2">
                       <Link href="/opportunities?saved=true">
                         <Button variant="ghost" size="sm" className="gap-1.5">
-                          Ещё {savedOps.length - 4} сохранённых
+                          {t.dashboard.moreSaved} {savedOps.length - 4} {t.dashboard.moreSavedSuffix}
                           <ArrowRight className="size-3.5" />
                         </Button>
                       </Link>
@@ -378,11 +375,11 @@ export default function DashboardPage() {
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="flex items-center gap-2 text-lg font-bold text-foreground">
                     <Sparkles className="size-5 text-primary" />
-                    Рекомендуем тебе
+                    {t.dashboard.recommended}
                   </h2>
                   <Link href="/courses">
                     <Button variant="ghost" size="sm" className="gap-1 text-xs">
-                      Все курсы <ArrowRight className="size-3.5" />
+                      {t.dashboard.allCourses} <ArrowRight className="size-3.5" />
                     </Button>
                   </Link>
                 </div>
@@ -402,12 +399,12 @@ export default function DashboardPage() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Target className="size-4 text-primary" />
-                  Мои цели
+                  {t.dashboard.myGoals}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
                 {user.goals.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Цели не указаны</p>
+                  <p className="text-sm text-muted-foreground">{t.dashboard.noGoals}</p>
                 ) : (
                   <ul className="flex flex-col gap-2">
                     {user.goals.map((goal) => (
@@ -426,7 +423,7 @@ export default function DashboardPage() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Calendar className="size-4 text-primary" />
-                  Ближайшие дедлайны
+                  {t.dashboard.upcomingDeadlines}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
@@ -434,10 +431,8 @@ export default function DashboardPage() {
 
                 {upcomingDeadlines.length === 0 ? (
                   <div className="text-center py-3">
-                    <p className="text-sm text-muted-foreground">Нет ближайших дедлайнов</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Сохраняй возможности, чтобы отслеживать их дедлайны
-                    </p>
+                    <p className="text-sm text-muted-foreground">{t.dashboard.noDeadlines}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t.dashboard.noDeadlinesDesc}</p>
                   </div>
                 ) : (
                   <ul className="mt-3 flex flex-col gap-3">
@@ -465,7 +460,7 @@ export default function DashboardPage() {
                                   : 'bg-secondary text-secondary-foreground'
                               )}
                             >
-                              {days} дн.
+                              {days} {t.dashboard.days}
                             </Badge>
                           </div>
                         </li>
@@ -481,7 +476,7 @@ export default function DashboardPage() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Award className="size-4 text-primary" />
-                  Для тебя
+                  {t.dashboard.forYou}
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-3 pt-0">
@@ -509,7 +504,9 @@ export default function DashboardPage() {
                             {op.category}
                           </Badge>
                           {days > 0 && (
-                            <span className="text-xs text-muted-foreground">{days} дн.</span>
+                            <span className="text-xs text-muted-foreground">
+                              {days} {t.dashboard.days}
+                            </span>
                           )}
                         </div>
                       </div>
@@ -518,7 +515,7 @@ export default function DashboardPage() {
                 })}
                 <Link href="/opportunities">
                   <Button variant="outline" size="sm" className="mt-1 w-full gap-1.5">
-                    Все рекомендации
+                    {t.dashboard.allRecommendations}
                     <ArrowRight className="size-3.5" />
                   </Button>
                 </Link>
@@ -528,31 +525,28 @@ export default function DashboardPage() {
             {/* Profile info */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Мой профиль</CardTitle>
+                <CardTitle className="text-base">{t.dashboard.myProfile}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 pt-0">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Стрик
+                    {t.dashboard.streak}
                   </p>
                   <div className="mt-0.5 flex items-center gap-2">
                     <Badge className="bg-rose-500/10 text-rose-500 border-0 text-sm">
-                      {streakDays} дн.
+                      {streakDays} {t.dashboard.days}
                     </Badge>
-                    <p className="text-xs text-muted-foreground">дней подряд</p>
+                    <p className="text-xs text-muted-foreground">{t.dashboard.streakDays}</p>
                   </div>
                 </div>
                 <Separator />
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Интересы
+                    {t.dashboard.interests}
                   </p>
                   <div className="mt-1.5 flex flex-wrap gap-1">
                     {user.interests.map((i) => (
-                      <Badge
-                        key={i}
-                        className="bg-primary/10 text-primary border-0 text-xs"
-                      >
+                      <Badge key={i} className="bg-primary/10 text-primary border-0 text-xs">
                         {i}
                       </Badge>
                     ))}
@@ -561,7 +555,7 @@ export default function DashboardPage() {
                 <Separator />
                 <Link href="/onboarding">
                   <Button variant="outline" size="sm" className="w-full">
-                    Обновить профиль
+                    {t.dashboard.updateProfile}
                   </Button>
                 </Link>
               </CardContent>

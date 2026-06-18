@@ -25,75 +25,25 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { useApp } from '@/lib/store'
+import { useI18n } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
-// ── Step data ──────────────────────────────────────────────────────────────────
+const goalIcons = [GraduationCap, Trophy, DollarSign, BookOpen, Briefcase, Code, FlaskConical, Target]
 
-const grades = [
-  { value: '7', label: '7 класс' },
-  { value: '8', label: '8 класс' },
-  { value: '9', label: '9 класс' },
-  { value: '10', label: '10 класс' },
-  { value: '11', label: '11 класс' },
-  { value: 'Студент', label: 'Студент' },
-]
-
-const interestOptions = [
-  { value: 'Математика', icon: '∑', color: 'bg-blue-50 border-blue-200 text-blue-700' },
-  { value: 'Физика', icon: '⚛', color: 'bg-cyan-50 border-cyan-200 text-cyan-700' },
-  { value: 'Биология', icon: '🧬', color: 'bg-green-50 border-green-200 text-green-700' },
-  { value: 'Программирование', icon: '<>', color: 'bg-purple-50 border-purple-200 text-purple-700' },
-  { value: 'Бизнес', icon: '📊', color: 'bg-amber-50 border-amber-200 text-amber-700' },
-  { value: 'Финансы', icon: '$', color: 'bg-yellow-50 border-yellow-200 text-yellow-700' },
-  { value: 'Английский', icon: 'Aa', color: 'bg-rose-50 border-rose-200 text-rose-700' },
-  { value: 'Экономика', icon: '📈', color: 'bg-orange-50 border-orange-200 text-orange-700' },
-  { value: 'Химия', icon: '⚗', color: 'bg-indigo-50 border-indigo-200 text-indigo-700' },
-  { value: 'Социальные науки', icon: '🌐', color: 'bg-teal-50 border-teal-200 text-teal-700' },
-  { value: 'Дизайн', icon: '✏', color: 'bg-pink-50 border-pink-200 text-pink-700' },
-  { value: 'Наука', icon: '🔭', color: 'bg-sky-50 border-sky-200 text-sky-700' },
-]
-
-const goalOptions = [
-  {
-    value: 'Поступить в зарубежный университет',
-    icon: GraduationCap,
-    desc: 'США, Великобритания, Европа',
-  },
-  {
-    value: 'Выиграть олимпиаду',
-    icon: Trophy,
-    desc: 'Международные и республиканские',
-  },
-  {
-    value: 'Получить стипендию',
-    icon: DollarSign,
-    desc: 'Болашак и другие программы',
-  },
-  {
-    value: 'Подготовиться к SAT/IELTS',
-    icon: BookOpen,
-    desc: 'Международные экзамены',
-  },
-  {
-    value: 'Запустить стартап',
-    icon: Briefcase,
-    desc: 'Предпринимательство',
-  },
-  {
-    value: 'Развить навыки программирования',
-    icon: Code,
-    desc: 'Python, алгоритмы, проекты',
-  },
-  {
-    value: 'Участвовать в научных проектах',
-    icon: FlaskConical,
-    desc: 'Исследования и публикации',
-  },
-  {
-    value: 'Развить лидерские качества',
-    icon: Target,
-    desc: 'Конференции, волонтёрство',
-  },
+const interestIcons = ['∑', '⚛', '🧬', '<>', '📊', '$', 'Aa', '📈', '⚗', '🌐', '✏', '🔭']
+const interestColors = [
+  'bg-blue-50 border-blue-200 text-blue-700',
+  'bg-cyan-50 border-cyan-200 text-cyan-700',
+  'bg-green-50 border-green-200 text-green-700',
+  'bg-purple-50 border-purple-200 text-purple-700',
+  'bg-amber-50 border-amber-200 text-amber-700',
+  'bg-yellow-50 border-yellow-200 text-yellow-700',
+  'bg-rose-50 border-rose-200 text-rose-700',
+  'bg-orange-50 border-orange-200 text-orange-700',
+  'bg-indigo-50 border-indigo-200 text-indigo-700',
+  'bg-teal-50 border-teal-200 text-teal-700',
+  'bg-pink-50 border-pink-200 text-pink-700',
+  'bg-sky-50 border-sky-200 text-sky-700',
 ]
 
 const TOTAL_STEPS = 4
@@ -101,6 +51,8 @@ const TOTAL_STEPS = 4
 export default function OnboardingPage() {
   const router = useRouter()
   const { completeOnboarding } = useApp()
+  const { t } = useI18n()
+  const ob = t.onboarding
 
   const [step, setStep] = useState(1)
   const [name, setName] = useState('')
@@ -162,7 +114,7 @@ export default function OnboardingPage() {
             </span>
           </Link>
           <span className="text-sm text-muted-foreground">
-            Шаг {step} из {TOTAL_STEPS}
+            {ob.stepOf} {step} {ob.stepOfMid} {TOTAL_STEPS}
           </span>
         </div>
       </header>
@@ -181,25 +133,23 @@ export default function OnboardingPage() {
                 <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <User className="size-7 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold text-foreground">Привет! Давай знакомиться</h1>
-                <p className="mt-2 text-muted-foreground">
-                  Создай свой профиль на Mentoria Hub — это займёт меньше 2 минут.
-                </p>
+                <h1 className="text-2xl font-bold text-foreground">{ob.step1Title}</h1>
+                <p className="mt-2 text-muted-foreground">{ob.step1Desc}</p>
               </div>
 
               <div className="surface-card space-y-4 rounded-lg p-6">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Твоё имя и фамилия</Label>
+                  <Label htmlFor="name">{ob.nameLabel}</Label>
                   <Input
                     id="name"
-                    placeholder="Например: Айгерим Бекова"
+                    placeholder={ob.namePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="h-11"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email-адрес</Label>
+                  <Label htmlFor="email">{ob.emailLabel}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -220,14 +170,12 @@ export default function OnboardingPage() {
                 <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <GraduationCap className="size-7 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold text-foreground">В каком ты классе?</h1>
-                <p className="mt-2 text-muted-foreground">
-                  Это поможет нам подобрать подходящие для тебя возможности и курсы.
-                </p>
+                <h1 className="text-2xl font-bold text-foreground">{ob.step2Title}</h1>
+                <p className="mt-2 text-muted-foreground">{ob.step2Desc}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {grades.map(({ value, label }) => (
+                {t.grades.map(({ value, label }) => (
                   <button
                     key={value}
                     onClick={() => setGrade(value)}
@@ -255,30 +203,28 @@ export default function OnboardingPage() {
                 <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <Heart className="size-7 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold text-foreground">Что тебя интересует?</h1>
-                <p className="mt-2 text-muted-foreground">
-                  Выбери от 1 до 5 предметов или направлений. Мы покажем подходящие возможности.
-                </p>
+                <h1 className="text-2xl font-bold text-foreground">{ob.step3Title}</h1>
+                <p className="mt-2 text-muted-foreground">{ob.step3Desc}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-                {interestOptions.map(({ value, icon, color }) => (
+                {t.interests.map((interestLabel, idx) => (
                   <button
-                    key={value}
-                    onClick={() => toggleInterest(value)}
+                    key={interestLabel}
+                    onClick={() => toggleInterest(interestLabel)}
                     className={cn(
                       'relative rounded-lg border p-3.5 text-left transition-all',
-                      interests.includes(value)
+                      interests.includes(interestLabel)
                         ? 'border-primary/60 bg-secondary'
                         : 'border-border/80 bg-card/80 hover:border-primary/30 hover:bg-secondary/70'
                     )}
                   >
-                    {interests.includes(value) && (
+                    {interests.includes(interestLabel) && (
                       <CheckCircle className="absolute right-2 top-2 size-4 text-primary" />
                     )}
-                    <span className="mb-1.5 block text-xl">{icon}</span>
-                    <span className={cn('text-xs font-medium', interests.includes(value) ? 'text-primary' : 'text-foreground')}>
-                      {value}
+                    <span className="mb-1.5 block text-xl">{interestIcons[idx] ?? '•'}</span>
+                    <span className={cn('text-xs font-medium', interests.includes(interestLabel) ? 'text-primary' : 'text-foreground')}>
+                      {interestLabel}
                     </span>
                   </button>
                 ))}
@@ -286,7 +232,7 @@ export default function OnboardingPage() {
 
               {interests.length > 0 && (
                 <p className="text-center text-sm text-primary">
-                  Выбрано: {interests.length}
+                  {ob.selectedCount} {interests.length}
                 </p>
               )}
             </div>
@@ -299,41 +245,42 @@ export default function OnboardingPage() {
                 <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-lg border border-primary/15 bg-secondary">
                   <Target className="size-7 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold text-foreground">Каковы твои цели?</h1>
-                <p className="mt-2 text-muted-foreground">
-                  Выбери одну или несколько целей, которых хочешь достичь с Mentoria Hub.
-                </p>
+                <h1 className="text-2xl font-bold text-foreground">{ob.step4Title}</h1>
+                <p className="mt-2 text-muted-foreground">{ob.step4Desc}</p>
               </div>
 
               <div className="flex flex-col gap-2.5">
-                {goalOptions.map(({ value, icon: Icon, desc }) => (
-                  <button
-                    key={value}
-                    onClick={() => toggleGoal(value)}
-                    className={cn(
-                      'flex items-center gap-4 rounded-lg border p-4 text-left transition-all',
-                      goals.includes(value)
-                        ? 'border-primary/60 bg-secondary'
-                        : 'border-border/80 bg-card/80 hover:border-primary/30 hover:bg-secondary/70'
-                    )}
-                  >
-                    <div className={cn(
-                      'flex size-10 shrink-0 items-center justify-center rounded-md',
-                      goals.includes(value) ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                    )}>
-                      <Icon className="size-5" />
-                    </div>
-                    <div className="flex-1">
-                      <p className={cn('text-sm font-medium', goals.includes(value) ? 'text-primary' : 'text-foreground')}>
-                        {value}
-                      </p>
-                      <p className="text-xs text-muted-foreground">{desc}</p>
-                    </div>
-                    {goals.includes(value) && (
-                      <CheckCircle className="size-5 shrink-0 text-primary" />
-                    )}
-                  </button>
-                ))}
+                {t.goals.map(({ value, desc }, idx) => {
+                  const Icon = goalIcons[idx] ?? Target
+                  return (
+                    <button
+                      key={value}
+                      onClick={() => toggleGoal(value)}
+                      className={cn(
+                        'flex items-center gap-4 rounded-lg border p-4 text-left transition-all',
+                        goals.includes(value)
+                          ? 'border-primary/60 bg-secondary'
+                          : 'border-border/80 bg-card/80 hover:border-primary/30 hover:bg-secondary/70'
+                      )}
+                    >
+                      <div className={cn(
+                        'flex size-10 shrink-0 items-center justify-center rounded-md',
+                        goals.includes(value) ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                      )}>
+                        <Icon className="size-5" />
+                      </div>
+                      <div className="flex-1">
+                        <p className={cn('text-sm font-medium', goals.includes(value) ? 'text-primary' : 'text-foreground')}>
+                          {value}
+                        </p>
+                        <p className="text-xs text-muted-foreground">{desc}</p>
+                      </div>
+                      {goals.includes(value) && (
+                        <CheckCircle className="size-5 shrink-0 text-primary" />
+                      )}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           )}
@@ -347,7 +294,7 @@ export default function OnboardingPage() {
               className="gap-1.5"
             >
               <ArrowLeft className="size-4" data-icon="inline-start" />
-              Назад
+              {ob.backBtn}
             </Button>
 
             <Button
@@ -359,11 +306,11 @@ export default function OnboardingPage() {
               {step === TOTAL_STEPS ? (
                 <>
                   <CheckCircle className="size-4" data-icon="inline-start" />
-                  Завершить и перейти
+                  {ob.finishBtn}
                 </>
               ) : (
                 <>
-                  Продолжить
+                  {ob.continueBtn}
                   <ArrowRight className="size-4" data-icon="inline-end" />
                 </>
               )}
@@ -372,7 +319,7 @@ export default function OnboardingPage() {
 
           {step === 1 && (
             <p className="mt-4 text-center text-xs text-muted-foreground">
-              Уже есть аккаунт?{' '}
+              {ob.alreadyHaveAccount}{' '}
               <button
                 onClick={() => {
                   setName('Айгерим Бекова')
@@ -380,7 +327,7 @@ export default function OnboardingPage() {
                 }}
                 className="text-primary underline-offset-2 hover:underline"
               >
-                Войти с тестовыми данными
+                {ob.loginWithTest}
               </button>
             </p>
           )}

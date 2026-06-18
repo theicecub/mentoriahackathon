@@ -11,6 +11,7 @@ import { Navbar } from '@/components/navbar'
 import { OpportunityCard } from '@/components/opportunity-card'
 import { opportunities, type Category, type Format, type Grade } from '@/lib/data'
 import { useApp } from '@/lib/store'
+import { useI18n } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 const ALL = 'all'
@@ -31,6 +32,7 @@ const grades: (Grade | typeof ALL)[] = [ALL, '7', '8', '9', '10', '11', 'Сту�
 
 export default function OpportunitiesPage() {
   const { savedOpportunities, adminOpportunities } = useApp()
+  const { t } = useI18n()
   const allOpportunities = useMemo(
     () => [...opportunities, ...adminOpportunities],
     [adminOpportunities]
@@ -52,7 +54,7 @@ export default function OpportunitiesPage() {
           !search ||
           op.title.toLowerCase().includes(q) ||
           op.organization.toLowerCase().includes(q) ||
-          op.tags.some((t) => t.toLowerCase().includes(q))
+          op.tags.some((tg) => tg.toLowerCase().includes(q))
         const matchesCategory = category === ALL || op.category === category
         const matchesFormat = format === ALL || op.format === format
         const matchesGrade = grade === ALL || op.grades.includes(grade as Grade)
@@ -84,7 +86,7 @@ export default function OpportunitiesPage() {
     <div className="flex flex-col gap-5">
       <div>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Категория
+          {t.opportunities.categoryLabel}
         </p>
         <div className="flex flex-col gap-1">
           {categories.map((c) => (
@@ -98,7 +100,7 @@ export default function OpportunitiesPage() {
                   : 'text-muted-foreground hover:bg-secondary/70 hover:text-foreground'
               )}
             >
-              {c === ALL ? 'Все категории' : c}
+              {c === ALL ? t.opportunities.allCategories : c}
             </button>
           ))}
         </div>
@@ -108,7 +110,7 @@ export default function OpportunitiesPage() {
 
       <div>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Формат
+          {t.opportunities.formatLabel}
         </p>
         <div className="flex flex-col gap-1">
           {formats.map((f) => (
@@ -122,7 +124,7 @@ export default function OpportunitiesPage() {
                   : 'text-muted-foreground hover:bg-secondary/70 hover:text-foreground'
               )}
             >
-              {f === ALL ? 'Любой формат' : f}
+              {f === ALL ? t.opportunities.anyFormat : f}
             </button>
           ))}
         </div>
@@ -132,7 +134,7 @@ export default function OpportunitiesPage() {
 
       <div>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Класс / Возраст
+          {t.opportunities.gradeLabel}
         </p>
         <div className="flex flex-wrap gap-1.5">
           {grades.map((g) => (
@@ -146,7 +148,7 @@ export default function OpportunitiesPage() {
                   : 'border-border/80 text-muted-foreground hover:border-primary/40 hover:text-foreground'
               )}
             >
-              {g === ALL ? 'Все' : `${g}`}
+              {g === ALL ? t.opportunities.allGrades : `${g}`}
             </button>
           ))}
         </div>
@@ -155,9 +157,14 @@ export default function OpportunitiesPage() {
       {activeFilters.length > 0 && (
         <>
           <Separator />
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="justify-start gap-1.5 text-destructive hover:text-destructive">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className="justify-start gap-1.5 text-destructive hover:text-destructive"
+          >
             <X className="size-3.5" data-icon="inline-start" />
-            Сбросить фильтры
+            {t.opportunities.resetFilters}
           </Button>
         </>
       )}
@@ -172,10 +179,10 @@ export default function OpportunitiesPage() {
       <div className="border-b border-border/70 bg-background/70">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
           <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-            Каталог возможностей
+            {t.opportunities.title}
           </h1>
           <p className="mt-1.5 text-muted-foreground">
-            Олимпиады, стипендии, летние программы и конкурсы — {allOpportunities.length} возможностей
+            {t.opportunities.desc} — {allOpportunities.length} {t.opportunities.foundSuffix}
           </p>
 
           {/* Search bar */}
@@ -183,7 +190,7 @@ export default function OpportunitiesPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Поиск по названию, организации или тегу..."
+                placeholder={t.opportunities.searchPlaceholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="h-11 pl-9"
@@ -200,11 +207,13 @@ export default function OpportunitiesPage() {
 
             <Select value={sortBy} onValueChange={(v: 'deadline' | 'title') => setSortBy(v)}>
               <SelectTrigger style={{ height: '44px' }} className="w-40">
-                  <span>{sortBy === 'deadline' ? 'По дедлайну' : 'По названию'}</span>
+                <span>
+                  {sortBy === 'deadline' ? t.opportunities.sortDeadline : t.opportunities.sortTitle}
+                </span>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="deadline">По дедлайну</SelectItem>
-                <SelectItem value="title">По названию</SelectItem>
+                <SelectItem value="deadline">{t.opportunities.sortDeadline}</SelectItem>
+                <SelectItem value="title">{t.opportunities.sortTitle}</SelectItem>
               </SelectContent>
             </Select>
 
@@ -214,7 +223,7 @@ export default function OpportunitiesPage() {
               onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
             >
               <SlidersHorizontal className="size-4" />
-              Фильтры
+              {t.opportunities.filtersBtn}
               {activeFilters.length > 0 && (
                 <Badge className="ml-1 size-5 rounded-full bg-primary text-primary-foreground p-0 text-xs">
                   {activeFilters.length}
@@ -226,7 +235,7 @@ export default function OpportunitiesPage() {
           {/* Active filter chips */}
           {(activeFilters.length > 0 || showSaved) && (
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-muted-foreground">Активные фильтры:</span>
+              <span className="text-xs text-muted-foreground">{t.opportunities.activeFiltersLabel}</span>
               {activeFilters.map((f) => (
                 <Badge key={f} className="bg-primary/10 text-primary border-0 gap-1">
                   {f}
@@ -234,14 +243,14 @@ export default function OpportunitiesPage() {
               ))}
               {showSaved && (
                 <Badge className="bg-primary/10 text-primary border-0 gap-1">
-                  Избранное
+                  {t.opportunities.savedBadge}
                   <button onClick={() => setShowSaved(false)}>
                     <X className="size-3" />
                   </button>
                 </Badge>
               )}
               <button onClick={clearFilters} className="text-xs text-destructive hover:underline">
-                Сбросить
+                {t.opportunities.resetAll}
               </button>
             </div>
           )}
@@ -261,7 +270,7 @@ export default function OpportunitiesPage() {
           <div className="surface-card sticky top-20 rounded-lg p-5">
             <div className="mb-4 flex items-center gap-2">
               <Filter className="size-4 text-muted-foreground" />
-              <span className="text-sm font-semibold text-foreground">Фильтры</span>
+              <span className="text-sm font-semibold text-foreground">{t.opportunities.filtersTitle}</span>
             </div>
 
             {/* Saved toggle */}
@@ -275,7 +284,7 @@ export default function OpportunitiesPage() {
               )}
             >
               <Bookmark className="size-4" />
-              Только избранные
+              {t.opportunities.onlySaved}
             </button>
 
             <FiltersPanel />
@@ -295,24 +304,24 @@ export default function OpportunitiesPage() {
             )}
           >
             <Bookmark className="size-4" />
-            Только избранные
+            {t.opportunities.onlySaved}
           </button>
 
           <div className="mb-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              Найдено: <span className="font-medium text-foreground">{filtered.length}</span> возможностей
+              {t.opportunities.found}{' '}
+              <span className="font-medium text-foreground">{filtered.length}</span>{' '}
+              {t.opportunities.foundSuffix}
             </p>
           </div>
 
           {filtered.length === 0 ? (
             <div className="surface-card flex flex-col items-center justify-center rounded-lg border-dashed py-20 text-center">
               <Search className="mb-3 size-10 text-muted-foreground/40" />
-              <p className="font-medium text-foreground">Ничего не найдено</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Попробуй изменить запрос или сбросить фильтры
-              </p>
+              <p className="font-medium text-foreground">{t.opportunities.nothingFound}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t.opportunities.nothingFoundDesc}</p>
               <Button variant="outline" className="mt-4" onClick={clearFilters}>
-                Сбросить всё
+                {t.opportunities.resetAllBtn}
               </Button>
             </div>
           ) : (
