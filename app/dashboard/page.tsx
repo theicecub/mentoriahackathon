@@ -537,21 +537,6 @@ export default function DashboardPage() {
                   </p>
                   <div className="mt-0.5 flex items-center gap-2">
                     <Badge className="bg-rose-500/10 text-rose-500 border-0 text-sm">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="size-3"
-                        aria-hidden="true"
-                        data-icon="inline-start"
-                      >
-                        <path d="M12 2s-4 4.5-4 8.5a4 4 0 0 0 8 0C16 6.5 12 2 12 2z" />
-                        <path d="M8 14a4 4 0 0 0 8 0" />
-                      </svg>
                       {streakDays} дн.
                     </Badge>
                     <p className="text-xs text-muted-foreground">дней подряд</p>
