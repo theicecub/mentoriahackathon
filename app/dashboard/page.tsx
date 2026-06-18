@@ -16,6 +16,7 @@ import {
   Sparkles,
   Target,
   TrendingUp,
+  Fire,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -89,6 +90,31 @@ export default function DashboardPage() {
     const pct = Math.round((ec.completedLessons.length / course.lessons.length) * 100)
     return { course, enrolled: ec, pct }
   }).filter(Boolean) as { course: (typeof allCourses)[0]; enrolled: (typeof enrolledCourses)[0]; pct: number }[]
+
+  const streakDays = useMemo(() => {
+    const activityDays = new Set(
+      enrolled
+        .map((e) => {
+          const d = e.enrolled.lastActivity
+          if (!d) return null
+          const dt = new Date(d)
+          return dt.toISOString().slice(0, 10)
+        })
+        .filter(Boolean)
+    )
+
+    let streak = 0
+    const today = new Date()
+    for (let i = 0; ; i++) {
+      const day = new Date(today)
+      day.setDate(today.getDate() - i)
+      const key = day.toISOString().slice(0, 10)
+      if (activityDays.has(key)) streak++
+      else break
+    }
+
+    return streak
+  }, [enrolled])
 
   const recommended = getRecommendedOpportunities(user.interests, user.grade).slice(0, 3)
   const recommendedCourses = getRecommendedCourses(user.interests, user.grade)
@@ -508,9 +534,15 @@ export default function DashboardPage() {
               <CardContent className="space-y-3 pt-0">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Класс
+                    Стрик
                   </p>
-                  <p className="mt-0.5 text-sm font-medium text-foreground">{user.grade} класс</p>
+                  <div className="mt-0.5 flex items-center gap-2">
+                    <Badge className="bg-rose-500/10 text-rose-500 border-0 text-sm">
+                      <Fire className="size-3" data-icon="inline-start" />
+                      {streakDays} дн.
+                    </Badge>
+                    <p className="text-xs text-muted-foreground">дней подряд</p>
+                  </div>
                 </div>
                 <Separator />
                 <div>
