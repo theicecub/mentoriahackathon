@@ -14,8 +14,6 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useApp } from '@/lib/store'
-import Trans from '@/components/Trans'
-import { useLocale } from '@/components/LocaleProvider'
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -40,7 +38,6 @@ const SUGGESTIONS = [
 
 export function AIAssistant() {
   const { user, isLoggedIn } = useApp()
-  const { t } = useLocale()
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -112,14 +109,14 @@ export function AIAssistant() {
   <div>
     <p className="text-sm font-semibold leading-none ai-header-title !text-white">Mentoria AI-Bot</p>
     <p className="mt-0.5 text-xs ai-header-sub !text-white">
-      {isLoggedIn ? t('Привет, {name}!', { name: user?.name?.split(' ')[0] }) : t('Ассистент')}
+      {isLoggedIn ? `Привет, ${user?.name?.split(' ')[0]}` : 'Ассистент'}
     </p>
   </div>
 </div>
             <button
   onClick={() => setOpen(false)}
   className="ai-close flex size-7 items-center justify-center rounded-full transition-colors !text-white hover:!text-black"
-  aria-label={t('Закрыть')}
+  aria-label="Закрыть"
 >
   <X className="size-4" />
 </button>
@@ -133,9 +130,9 @@ export function AIAssistant() {
                   <Bot className="size-7" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm ai-welcome-title"><Trans>Привет! Я Mentoria AI</Trans></p>
+                  <p className="font-semibold text-sm ai-welcome-title">Привет! Я Mentoria AI</p>
                   <p className="mt-1 text-xs leading-relaxed ai-welcome-sub">
-                    <Trans>Расскажу о возможностях, которые подходят именно тебе — по интересам, классу и целям.</Trans>
+                    Расскажу о возможностях, которые подходят именно тебе — по интересам, классу и целям.
                   </p>
                 </div>
                 {/* Suggestions */}
@@ -147,7 +144,7 @@ export function AIAssistant() {
                       disabled={isLoading}
                       className="ai-chip text-xs px-3 py-1.5 rounded-full transition-colors disabled:opacity-50"
                     >
-                      <Trans>{s}</Trans>
+                      {s}
                     </button>
                   ))}
                 </div>
@@ -216,7 +213,7 @@ export function AIAssistant() {
                   className="ai-chip shrink-0 text-xs px-2.5 py-1 rounded-full transition-colors"
                 >
                   <Lightbulb className="inline size-3 mr-1" />
-                  <Trans>{s}</Trans>
+                  {s}
                 </button>
               ))}
             </div>
@@ -229,7 +226,7 @@ export function AIAssistant() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={t('Спроси о возможностях...')}
+              placeholder="Спроси о возможностях..."
               rows={1}
               className="ai-textarea flex-1 resize-none rounded-xl px-3 py-2.5 text-sm outline-none transition-all"
               style={{ maxHeight: '96px' }}
@@ -239,7 +236,7 @@ export function AIAssistant() {
               onClick={handleSend}
               disabled={!input.trim() || isLoading}
               className="ai-send-btn flex size-9 shrink-0 items-center justify-center rounded-xl transition-all disabled:opacity-40"
-              aria-label={t('Отправить')}
+              aria-label="Отправить"
             >
               {isLoading ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -259,11 +256,11 @@ export function AIAssistant() {
     'ai-fab',
     open && 'ai-fab-open'
   )}
-  aria-label={open ? t('Закрыть ассистента') : t('Открыть AI-ассистента')}
+  aria-label={open ? 'Закрыть ассистента' : 'Открыть AI-ассистента'}
 >
   <Sparkles className="size-5" />
   {!open && (
-    <span className="text-sm font-semibold pr-1"><Trans>AI-помощник</Trans></span>
+    <span className="text-sm font-semibold pr-1">AI-помощник</span>
   )}
   {open && <ChevronDown className="size-4" />}
 </button>

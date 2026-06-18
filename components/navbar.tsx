@@ -26,8 +26,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useApp } from '@/lib/store'
-import Trans from '@/components/Trans'
-import { useLocale } from '@/components/LocaleProvider'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
@@ -39,7 +37,6 @@ export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
   const { isLoggedIn, user, logout, toggleTheme, theme } = useApp()
-  const { t } = useLocale()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const initials = user?.name
@@ -84,7 +81,7 @@ export function Navbar() {
               )}
             >
               <Icon className="size-4" />
-              <Trans>{label}</Trans>
+              {label}
             </Link>
           ))}
         </nav>
@@ -94,7 +91,7 @@ export function Navbar() {
           <button
             onClick={toggleTheme}
             className="flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
-            aria-label={t(theme === 'dark' ? 'Светлая тема' : 'Тёмная тема')}
+            aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
           >
             {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
           </button>
@@ -107,7 +104,7 @@ export function Navbar() {
                   className="gap-1.5"
                 >
                   <LayoutDashboard className="size-4" data-icon="inline-start" />
-                  <Trans>Кабинет</Trans>
+                  Кабинет
                 </Button>
               </Link>
               <DropdownMenu>
@@ -125,13 +122,13 @@ export function Navbar() {
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard" className="flex items-center gap-2">
                       <User className="size-4" />
-                      <Trans>Мой кабинет</Trans>
+                      Мой кабинет
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/admin" className="flex items-center gap-2">
                       <Settings className="size-4" />
-                      <Trans>Админ-панель</Trans>
+                      Админ-панель
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -140,7 +137,7 @@ export function Navbar() {
                     className="text-destructive focus:text-destructive flex items-center gap-2"
                   >
                     <LogOut className="size-4" />
-                    <Trans>Выйти</Trans>
+                    Выйти
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -166,7 +163,7 @@ export function Navbar() {
           <button
             onClick={toggleTheme}
             className="flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
-            aria-label={t(theme === 'dark' ? 'Светлая тема' : 'Тёмная тема')}
+            aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
           >
             {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
           </button>
@@ -184,7 +181,7 @@ export function Navbar() {
       {mobileOpen && (
         <div className="border-t border-border/70 bg-background/95 px-4 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
-                {navLinks.map(({ href, label, icon: Icon }) => (
+            {navLinks.map(({ href, label, icon: Icon }) => (
               <Link
                 key={href}
                 href={href}
@@ -197,7 +194,7 @@ export function Navbar() {
                 )}
               >
                 <Icon className="size-4" />
-                    <Trans>{label}</Trans>
+                {label}
               </Link>
             ))}
             {isLoggedIn ? (
@@ -208,7 +205,7 @@ export function Navbar() {
                   className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary/70"
                 >
                   <LayoutDashboard className="size-4" />
-                  <Trans>Кабинет</Trans>
+                  Кабинет
                 </Link>
                 <Link
                   href="/admin"
@@ -216,26 +213,26 @@ export function Navbar() {
                   className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary/70"
                 >
                   <Settings className="size-4" />
-                  <Trans>Админ-панель</Trans>
+                  Админ-панель
                 </Link>
                 <button
                   onClick={() => { handleLogout(); setMobileOpen(false) }}
                   className="flex items-center gap-2 rounded-md px-3 py-2.5 text-left text-sm font-medium text-destructive hover:bg-secondary/70"
                 >
                   <LogOut className="size-4" />
-                  <Trans>Выйти</Trans>
+                  Выйти
                 </button>
               </>
             ) : (
               <div className="flex flex-col gap-2 pt-2">
                 <Link href="/onboarding" onClick={() => setMobileOpen(false)}>
                   <Button variant="outline" className="w-full">
-                    <Trans>Войти</Trans>
+                    Войти
                   </Button>
                 </Link>
                 <Link href="/onboarding" onClick={() => setMobileOpen(false)}>
                   <Button className="w-full bg-primary text-primary-foreground">
-                    <Trans>Присоединиться</Trans>
+                    Присоединиться
                   </Button>
                 </Link>
               </div>

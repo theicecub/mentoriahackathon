@@ -9,8 +9,6 @@ import { Progress } from '@/components/ui/progress'
 import { type Course, categoryColors, difficultyColors } from '@/lib/data'
 import { useApp } from '@/lib/store'
 import { cn } from '@/lib/utils'
-import Trans from '@/components/Trans'
-import { useLocale } from '@/components/LocaleProvider'
 
 interface CourseCardProps {
   course: Course
@@ -19,7 +17,6 @@ interface CourseCardProps {
 
 export function CourseCard({ course, showProgress = false }: CourseCardProps) {
   const { isCourseEnrolled, enrollCourse, getCourseProgress, isLoggedIn } = useApp()
-  const { t } = useLocale()
   const enrolled = isCourseEnrolled(course.id)
   const progressData = getCourseProgress(course.id)
 
@@ -51,17 +48,17 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
             {course.difficulty}
           </Badge>
         </div>
-          {enrolled && (
+        {enrolled && (
           <div className="absolute left-2 top-2">
             <Badge className="bg-primary text-primary-foreground text-xs border-0">
-              <Trans>Записан</Trans>
+              Записан
             </Badge>
           </div>
         )}
         {course.featured && !enrolled && (
           <div className="absolute left-2 top-2">
             <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs dark:text-white">
-              <Trans>Популярный</Trans>
+              Популярный
             </Badge>
           </div>
         )}
@@ -92,7 +89,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
         <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
           <span className="flex items-center gap-1 rounded-md bg-muted/45 px-2 py-1">
             <BookOpen className="size-3.5" />
-            {course.lessons.length} {t('уроков')}
+            {course.lessons.length} уроков
           </span>
           <span className="flex items-center gap-1 rounded-md bg-muted/45 px-2 py-1">
             <Clock className="size-3.5" />
@@ -107,7 +104,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
         {(showProgress || enrolled) && (
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground"><Trans>Прогресс</Trans></span>
+              <span className="text-muted-foreground">Прогресс</span>
               <span className="font-medium text-primary">{progressPct}%</span>
             </div>
             <Progress value={progressPct} className="h-1.5" />
@@ -124,7 +121,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
 >
   <Link href={`/courses/${course.id}`} className="flex items-center gap-2">
     <Play className="size-3.5" />
-                            {progressPct > 0 ? <Trans>Продолжить</Trans> : <Trans>Начать</Trans>}
+    {progressPct > 0 ? 'Продолжить' : 'Начать'}
   </Link>
 </Button>
         ) : (
@@ -135,7 +132,7 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
               className="flex-1 text-sm"
               asChild
             >
-              <Link href={`/courses/${course.id}`}><Trans>Подробнее</Trans></Link>
+              <Link href={`/courses/${course.id}`}>Подробнее</Link>
             </Button>
             <Button
               size="sm"
@@ -144,9 +141,9 @@ export function CourseCard({ course, showProgress = false }: CourseCardProps) {
               asChild={!isLoggedIn}
             >
               {isLoggedIn ? (
-                <Trans>Записаться</Trans>
+                'Записаться'
               ) : (
-                <Link href="/onboarding"><Trans>Записаться</Trans></Link>
+                <Link href="/onboarding">Записаться</Link>
               )}
             </Button>
           </div>
