@@ -7,6 +7,8 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { type Opportunity, categoryColors } from '@/lib/data'
 import { useApp } from '@/lib/store'
 import { cn } from '@/lib/utils'
+import Trans from '@/components/Trans'
+import { useLocale } from '@/components/LocaleProvider'
 
 interface OpportunityCardProps {
   opportunity: Opportunity
@@ -15,6 +17,7 @@ interface OpportunityCardProps {
 
 export function OpportunityCard({ opportunity, compact = false }: OpportunityCardProps) {
   const { isLoggedIn, isOpportunitySaved, saveOpportunity, unsaveOpportunity } = useApp()
+  const { t, locale } = useLocale()
   const saved = isOpportunitySaved(opportunity.id)
 
   const deadlineDate = new Date(opportunity.deadline)
@@ -42,7 +45,7 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
           {isLoggedIn && (
             <button
               onClick={handleSave}
-              aria-label={saved ? 'Убрать из избранного' : 'Сохранить'}
+              aria-label={t(saved ? 'Убрать из избранного' : 'Сохранить')}
               className={cn(
                 'rounded-md p-1.5 transition-colors',
                 saved
@@ -56,7 +59,7 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
         </div>
 
         <div>
-          <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
+            <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
             <Badge
               className={cn(
                 'text-xs font-medium',
@@ -67,7 +70,7 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
             </Badge>
             {opportunity.featured && (
               <Badge className="border-amber/30 bg-amber/16 text-amber-foreground text-xs dark:text-white">
-                Рекомендуем
+                <Trans>Рекомендуем</Trans>
               </Badge>
             )}
           </div>
@@ -92,11 +95,11 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
             ) : (
               <MapPin className="size-3.5 shrink-0" />
             )}
-            <span>{opportunity.format}</span>
+            <span>{t(opportunity.format)}</span>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Users className="size-3.5 shrink-0" />
-            <span>Классы: {opportunity.grades.join(', ')}</span>
+            <span>{t('Классы: {grades}', { grades: opportunity.grades.join(', ') })}</span>
           </div>
           <div className="flex items-center gap-1.5 text-xs">
             <Calendar className="size-3.5 shrink-0 text-muted-foreground" />
@@ -110,10 +113,15 @@ export function OpportunityCard({ opportunity, compact = false }: OpportunityCar
               )}
             >
               {isExpired
-                ? 'Дедлайн истёк'
+                ? t('Дедлайн истёк')
                 : isUrgent
-                ? `Осталось ${daysLeft} дн. — ${deadlineDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}`
-                : `Дедлайн: ${deadlineDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}`}
+                ? t('Осталось {days} дн. — {date}', {
+                    days: String(daysLeft),
+                    date: deadlineDate.toLocaleDateString(locale === 'en' ? 'en-US' : locale === 'kk' ? 'kk-KZ' : 'ru-RU', { day: 'numeric', month: 'short' }),
+                  })
+                : t('Дедлайн: {date}', {
+                    date: deadlineDate.toLocaleDateString(locale === 'en' ? 'en-US' : locale === 'kk' ? 'kk-KZ' : 'ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }),
+                  })}
             </span>
           </div>
         </div>

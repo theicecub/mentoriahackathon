@@ -25,6 +25,8 @@ import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Leaderboard from '@/components/leaderboard'
 import { Navbar } from '@/components/navbar'
+import Trans from '@/components/Trans'
+import { useLocale } from '@/components/LocaleProvider'
 import { OpportunityCard } from '@/components/opportunity-card'
 import { CourseCard } from '@/components/course-card'
 import DeadlineCalendar from '@/components/deadline-calendar'
@@ -49,6 +51,7 @@ export default function DashboardPage() {
     adminOpportunities,
     adminCourses,
   } = useApp()
+  const { t } = useLocale()
 
   // Redirect if not logged in
   if (!isLoggedIn || !user) {
@@ -60,13 +63,13 @@ export default function DashboardPage() {
             <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-primary/10">
               <GraduationCap className="size-8 text-primary" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">Войдите в аккаунт</h1>
+            <h1 className="text-xl font-bold text-foreground"><Trans>Войдите в аккаунт</Trans></h1>
             <p className="mt-2 text-muted-foreground">
-              Чтобы попасть в личный кабинет, нужно создать профиль на Mentoria Hub.
+              <Trans>Чтобы попасть в личный кабинет, нужно создать профиль на Mentoria Hub.</Trans>
             </p>
             <Link href="/onboarding">
               <Button className="mt-5 bg-primary text-primary-foreground">
-                Создать профиль
+                <Trans>Создать профиль</Trans>
               </Button>
             </Link>
           </div>
@@ -156,7 +159,7 @@ export default function DashboardPage() {
             </Avatar>
             <div>
               <h1 className="text-xl font-bold text-foreground sm:text-2xl">
-                Привет, {user.name.split(' ')[0]}!
+                {t('Привет, {name}!', { name: user.name.split(' ')[0] })}
               </h1>
               <p className="text-sm text-muted-foreground">
                 {user.grade} класс · {user.interests.slice(0, 3).join(', ')}
@@ -167,13 +170,13 @@ export default function DashboardPage() {
             <Link href="/opportunities">
               <Button variant="outline" size="sm" className="gap-1.5">
                 <Compass className="size-4" data-icon="inline-start" />
-                Возможности
+                <Trans>Возможности</Trans>
               </Button>
             </Link>
             <Link href="/courses">
               <Button size="sm" className="bg-primary text-primary-foreground gap-1.5">
                 <BookOpen className="size-4" data-icon="inline-start" />
-                Курсы
+                <Trans>Курсы</Trans>
               </Button>
             </Link>
           </div>
@@ -186,10 +189,10 @@ export default function DashboardPage() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-foreground">
-              Mentoria AI знает, что тебе подойдёт
+              <Trans>Mentoria AI знает, что тебе подойдёт</Trans>
             </p>
             <p className="text-xs text-muted-foreground">
-              Нажми на кнопку <span className="font-medium text-primary">AI-помощник</span> внизу справа, чтобы получить персональные рекомендации
+              <Trans values={{ assistant: 'AI-помощник' }}>Нажми на кнопку {`{assistant}`} внизу справа, чтобы получить персональные рекомендации</Trans>
             </p>
           </div>
         </div>
@@ -229,7 +232,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <p className="text-xl font-bold text-foreground">{value}</p>
-                  <p className="text-xs text-muted-foreground">{label}</p>
+                  <p className="text-xs text-muted-foreground"><Trans>{label}</Trans></p>
                 </div>
               </CardContent>
             </Card>
@@ -244,11 +247,11 @@ export default function DashboardPage() {
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="flex items-center gap-2 text-lg font-bold text-foreground">
                   <TrendingUp className="size-5 text-primary" />
-                  Мои курсы
+                  <Trans>Мои курсы</Trans>
                 </h2>
                 <Link href="/courses">
                   <Button variant="ghost" size="sm" className="gap-1 text-xs">
-                    Все курсы <ArrowRight className="size-3.5" />
+                    <Trans>Все курсы</Trans> <ArrowRight className="size-3.5" />
                   </Button>
                 </Link>
               </div>

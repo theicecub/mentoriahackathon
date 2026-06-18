@@ -4,6 +4,7 @@ import { Inter, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { AppProvider } from '@/lib/store'
 import { AIAssistant } from '@/components/ai-assistant'
+import { LocaleProvider } from '@/components/LocaleProvider'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -47,10 +48,12 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${geistMono.variable} dark bg-background`}>
       <body className="font-sans antialiased">
-        <AppProvider>
-          {children}
-          <AIAssistant />
-        </AppProvider>
+        <LocaleProvider>
+          <AppProvider>
+            {children}
+            <AIAssistant />
+          </AppProvider>
+        </LocaleProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
