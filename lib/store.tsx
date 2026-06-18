@@ -117,8 +117,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const logout = useCallback(() => {
-    setState(defaultState)
-    localStorage.removeItem(STORAGE_KEY)
+    setState((s) => ({ ...defaultState, theme: s.theme }))
   }, [])
 
   const completeOnboarding = useCallback((profile: UserProfile) => {
